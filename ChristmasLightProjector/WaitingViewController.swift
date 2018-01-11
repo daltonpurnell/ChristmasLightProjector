@@ -40,4 +40,9 @@ class WaitingViewController: UIViewController {
         self.performSegue(withIdentifier: self.kShowMainVCSegueId, sender: self)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let mainVC = segue.destination as! ViewController
+        mainVC.isConnected = true
+    }
+    
 }

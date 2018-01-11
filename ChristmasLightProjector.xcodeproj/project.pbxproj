@@ -10,6 +10,7 @@
 		78B4B8751A49DDAF002B004D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B4B8741A49DDAF002B004D /* SettingsViewController.swift */; };
 		CF3449281FE9B37300FD420F /* ViewController+DrawingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3449271FE9B37300FD420F /* ViewController+DrawingMethods.swift */; };
 		CF34492C1FED3A7000FD420F /* WaitingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF34492B1FED3A7000FD420F /* WaitingViewController.swift */; };
+		CF4A4E052007B2A900DE76E1 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF4A4E042007B2A900DE76E1 /* OptionsViewController.swift */; };
 		CF7A50461FDE034900B38861 /* ImageScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7A50451FDE034900B38861 /* ImageScrollView.swift */; };
 		CF7A50481FDE551200B38861 /* ShapesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7A50471FDE551200B38861 /* ShapesViewController.swift */; };
 		CFE62CED20068F2E0025BF68 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFE62CEA2005B9730025BF68 /* CoreBluetooth.framework */; };
@@ -49,6 +50,7 @@
 		78B4B8741A49DDAF002B004D /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		CF3449271FE9B37300FD420F /* ViewController+DrawingMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+DrawingMethods.swift"; sourceTree = "<group>"; };
 		CF34492B1FED3A7000FD420F /* WaitingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitingViewController.swift; sourceTree = "<group>"; };
+		CF4A4E042007B2A900DE76E1 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		CF7A50451FDE034900B38861 /* ImageScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageScrollView.swift; sourceTree = "<group>"; };
 		CF7A50471FDE551200B38861 /* ShapesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapesViewController.swift; sourceTree = "<group>"; };
 		CFE62CE82005B96A0025BF68 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -119,6 +121,7 @@
 				EE43D4721A14A6F200311C06 /* AppDelegate.swift */,
 				EE43D4741A14A6F200311C06 /* ViewController.swift */,
 				CF3449271FE9B37300FD420F /* ViewController+DrawingMethods.swift */,
+				CF4A4E042007B2A900DE76E1 /* OptionsViewController.swift */,
 				78B4B8741A49DDAF002B004D /* SettingsViewController.swift */,
 				CFED18D71FDA3A22007EB50C /* ColorsViewController.swift */,
 				CF7A50471FDE551200B38861 /* ShapesViewController.swift */,
@@ -271,6 +274,7 @@
 				CF3449281FE9B37300FD420F /* ViewController+DrawingMethods.swift in Sources */,
 				EE43D4751A14A6F200311C06 /* ViewController.swift in Sources */,
 				CF34492C1FED3A7000FD420F /* WaitingViewController.swift in Sources */,
+				CF4A4E052007B2A900DE76E1 /* OptionsViewController.swift in Sources */,
 				EE43D4731A14A6F200311C06 /* AppDelegate.swift in Sources */,
 				CF7A50461FDE034900B38861 /* ImageScrollView.swift in Sources */,
 				CFED18D81FDA3A22007EB50C /* ColorsViewController.swift in Sources */,

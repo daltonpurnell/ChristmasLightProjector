@@ -16,6 +16,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     let kColorsSegueId = "showColors"
     let kShapesSegueId = "showShapes"
     let kShowWaitingSegueId = "showWaitingVC"
+    let kOptionsSegueId = "showOptions"
     
     let kSnowFlake =  "Snow Flake"
     let kStar = "Star"
@@ -320,8 +321,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         if let image = image {
 //            let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
 //            present(activity, animated: true, completion: nil)
-            
-            performSegue(withIdentifier: kShowWaitingSegueId, sender: self)
+            if !isConnected {
+                let alert = UIAlertController.init(title: "Oops!", message: "You must be connected to your device", preferredStyle: .alert)
+                let okAction = UIAlertAction.init(title: "OK", style: .default, handler: nil)
+                alert.addAction(okAction)
+                present(alert, animated: true, completion: nil)
+            } else {
+                performSegue(withIdentifier: kShowWaitingSegueId, sender: self)
+            }
         }
     }
     
@@ -726,6 +733,35 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
     }
     
+    func disconnect() {
+        if let sensorTag = self.sensorTag {
+            
+            /*
+             NOTE: The cancelPeripheralConnection: method is nonblocking, and any CBPeripheral class commands
+             that are still pending to the peripheral you’re trying to disconnect may or may not finish executing.
+             Because other apps may still have a connection to the peripheral, canceling a local connection
+             does not guarantee that the underlying physical link is immediately disconnected.
+             
+             From your app’s perspective, however, the peripheral is considered disconnected, and the central manager
+             object calls the centralManager:didDisconnectPeripheral:error: method of its delegate object.
+             */
+            centralManager.cancelPeripheralConnection(sensorTag)
+        }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        print("**** DISCONNECTED FROM SENSOR TAG!!!")
+        skipSetupButton.setTitle("OK", for: .normal)
+        spinner.isHidden = true
+        btInstructionsLabel.text = "Disconnected"
+        btImageView.image = UIImage(named: "check-mark")
+        isConnected = false
+        if error != nil {
+            print("****** DISCONNECTION DETAILS: \(error!.localizedDescription)")
+        }
+        sensorTag = nil
+    }
+    
     
     func showMainVC() {
         keepScanning = false
@@ -806,6 +842,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             let shapesViewController = segue.destination as! ShapesViewController
             shapesViewController.delegate = self
             shapesViewController.selectedShape = "Star"
+            
+        } else if segue.identifier == kOptionsSegueId {
+            let optionsViewController = segue.destination as! OptionsViewController
+            optionsViewController.delegate = self
+            optionsViewController.isConnected = isConnected
+            print("IS CONNECTED: \(isConnected)")
         }
     }
 
@@ -844,6 +886,26 @@ extension ViewController:ShapesViewControllerDelegate {
     func shapesViewControllerFinished(_ shapesViewController: ShapesViewController) {
         selectedShape = shapesViewController.selectedShape
         print("SELECTED SHAPE: \(selectedShape)")
+    }
+}
+
+extension ViewController:OptionsViewControllerDelegate {
+    func optionsViewControllerFinished(_ optionsViewController: OptionsViewController) {
+        if optionsViewController.connectSelected {
+            showbtSetupView()
+            toggleTryAgain(on: false)
+            spinner.isHidden = false
+            skipSetupButton.setTitle("CANCEL", for: .normal)
+            centralManager.delegate?.centralManagerDidUpdateState(centralManager)
+        } else if optionsViewController.disconnectSelected {
+            showbtSetupView()
+            toggleTryAgain(on: false)
+            spinner.isHidden = false
+            disconnect()
+            btInstructionsLabel.text = "Disconnecting..."
+            skipSetupButton.setTitle("CANCEL", for: .normal)
+            btImageView.image = UIImage(named: "disconnect")
+        }
     }
 }
 
