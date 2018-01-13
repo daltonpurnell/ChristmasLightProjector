@@ -20,11 +20,15 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     
     var isConnected = false
+    var isOn = true
     var options:[String] = []
     var icons: [String] = []
     
     var disconnectSelected = false
     var connectSelected = false
+    var turnOnSelected = false
+    var turnOffSelected = false
+    var connectedDeviceName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +46,11 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.addSubview(imageView)
         view.sendSubview(toBack: imageView)
         
-        let connectTitle = isConnected ? "Disconnect from Device" : "Connect to Device"
-        options = [connectTitle, "Send Feedback"]
-        icons = ["bluetooth", "feedback"]
+        let connectTitle = isConnected ? "Disconnect from \(connectedDeviceName)" : "Connect to Device"
+        let onOffTitle = isOn ? "Turn Lights Off" : "Turn Lights On"
+        let onOffSwitchImage = isOn ? "switch-on" : "switch-off"
+        options = [onOffTitle, connectTitle, "Send Feedback"]
+        icons = [onOffSwitchImage, "bluetooth", "feedback"]
         
     }
     
@@ -71,6 +77,17 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
+            if isOn {
+                turnOffSelected = true
+                turnOnSelected = false
+            } else {
+                turnOnSelected = true
+                turnOffSelected = false
+            }
+            dismiss(animated: true, completion: nil)
+            self.delegate?.optionsViewControllerFinished(self)
+            
+        } else if indexPath.row == 1 {
             if isConnected {
                 disconnectSelected = true
                 connectSelected = false
@@ -81,7 +98,7 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
             dismiss(animated: true, completion: nil)
             self.delegate?.optionsViewControllerFinished(self)
 
-        } else if indexPath.row == 1 {
+        } else if indexPath.row == 2 {
             // launch feedback form
         }
     }

@@ -10,7 +10,7 @@ import UIKit
 import CoreBluetooth
 
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, CBCentralManagerDelegate, CBPeripheralDelegate {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, CBCentralManagerDelegate, CBPeripheralDelegate, UITableViewDelegate, UITableViewDataSource {
     
     let kSettingsSegueId = "showSettings"
     let kColorsSegueId = "showColors"
@@ -41,6 +41,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBOutlet weak var tryAgainButton: UIButton!
     @IBOutlet weak var skipSetupButton: UIButton!
     @IBOutlet weak var btImageView: UIImageView!
+    @IBOutlet weak var btTableView: UITableView!
     
     
     
@@ -100,6 +101,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     var sensorTag:CBPeripheral?
     var keepScanning = true
     var isConnected = false
+    var isOn = true
+    var peripherals:[CBPeripheral] = []
+    var connectedDeviceName = ""
     
     let sensorTagName = "CC2650 SensorTag"
     
@@ -117,12 +121,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         pickerController.delegate = self
-        houseImageView.contentMode = .center
-        let image: UIImage = UIImage.init(named: "house.png")!
-        houseImageView.image = image
-        colorButton.setImage(UIImage(named:"color-red"), for: .normal)
-        toggleToolBar(enabled: false)
+        btTableView.delegate = self
+        btTableView.dataSource = self
+        
+        
+        checkForDeviceAndSetupImages()
+        
+        
         eraserButton.isEnabled = false
+        colorButton.setImage(UIImage(named:"color-red"), for: .normal)
         
         blurView.alpha = 0.0
         bluetoothSetupView.alpha = 0.0
@@ -269,6 +276,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             self.houseImageView.image = image
             self.mainImageView.image = nil
             self.toggleToolBar(enabled: false)
+            if !self.connectedDeviceName.isEmpty {
+                if let images = UserDefaults.standard.object(forKey: self.connectedDeviceName) {
+                    UserDefaults.standard.removeObject(forKey: self.connectedDeviceName)
+                }
+            }
         }
         
         let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
@@ -330,6 +342,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 alert.addAction(okAction)
                 present(alert, animated: true, completion: nil)
             } else {
+                let houseImage = houseImageView.image
+                let houseImageDataString:String = convertImageToBase64(image: houseImage!)
+                let mainImageDataString:String = convertImageToBase64(image: image)
+                let imagesArray:[String] = [houseImageDataString, mainImageDataString]
+                let commaSeparatedString:String = imagesArray.joined(separator:",")
+                saveToDefaults(key: connectedDeviceName, value: commaSeparatedString)
                 performSegue(withIdentifier: kShowWaitingSegueId, sender: self)
             }
         }
@@ -345,6 +363,33 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             images.removeAll()
         }
     }
+    
+    
+    // MARK: - User Defaults
+    func saveToDefaults(key:String, value: String) {
+        UserDefaults.standard.setValue(value, forKey: key)
+    }
+    
+    func retrieveFromDefaults(key:String) -> Any? {
+        return UserDefaults.standard.value(forKey: key)
+    }
+    
+    // MARK: - Image Conversion
+    func convertImageToBase64(image: UIImage) -> String {
+        let imageData = UIImagePNGRepresentation(image)
+        let base64String = imageData?.base64EncodedString()
+        
+        return base64String!
+    }
+    
+    func convertBase64ToImage(base64String: String) -> UIImage {
+        let decodedData = NSData(base64Encoded: base64String, options: NSData.Base64DecodingOptions(rawValue: 0) )
+        let decodedimage = UIImage(data: decodedData! as Data)
+        
+        return decodedimage!
+    }
+    
+    // MARK: - Drawing
     
     func distance(_ a: CGPoint, _ b: CGPoint) -> CGFloat {
         let xDist = a.x - b.x
@@ -627,7 +672,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     
     
-    // MARK - BLE stuff
+    // MARK: - BLE stuff
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         var message = ""
@@ -712,34 +757,32 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         // Retrieve the peripheral name from the advertisement data using the "kCBAdvDataLocalName" key
         if let peripheralName = advertisementData[CBAdvertisementDataLocalNameKey] as? String {
-            print("NEXT PERIPHERAL NAME: \(peripheralName)")
+//            print("NEXT PERIPHERAL NAME: \(peripheral)")
+            if !peripherals.contains(peripheral) {
+                peripherals.append(peripheral)
+            }
+            toggleTableView(show: true)
+            btTableView.reloadData()
             
             print("NEXT PERIPHERAL UUID: \(peripheral.identifier.uuidString)")
-            btInstructionsLabel.text = "Found device: \(peripheralName)"
-            
+            btInstructionsLabel.text = "Choose a device to connect to"
             //            if peripheralName == sensorTagName {
-            print("SENSOR TAG FOUND! ADDING NOW!!!")
+//            print("SENSOR TAG FOUND! ADDING NOW!!!")
             // to save power, stop scanning for other devices
             keepScanning = false
             //                disconnectButton.enabled = true
-            
-            // save a reference to the sensor tag
-            sensorTag = peripheral
-            sensorTag!.delegate = self
-            
-            // Request a connection to the peripheral
-            centralManager.connect(sensorTag!, options: nil)
             //            }
         }
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        btInstructionsLabel.text = "Connected!"
         spinner.isHidden = true
         skipSetupButton.setTitle("NEXT", for: .normal)
         btImageView.image = UIImage(named: "check-mark")
         isConnected = true
-        
+        connectedDeviceName = peripheral.name!
+        btInstructionsLabel.text = "Connected to \(connectedDeviceName)"
+        checkForDeviceAndSetupImages()
         // uncomment discoverServices when we know what services to look for
         //        peripheral.discoverServices(nil)
         
@@ -817,6 +860,30 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         sensorTag = nil
     }
     
+    // MARK: - tableView delegate & datasource
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        toggleTableView(show: false)
+
+        // save a reference to the sensor tag
+        sensorTag = peripherals[indexPath.row]
+        sensorTag!.delegate = self
+        // Request a connection to the peripheral
+        centralManager.connect(sensorTag!, options: nil)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return peripherals.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+        cell.textLabel?.text = peripherals[indexPath.row].name
+        cell.backgroundColor = .clear
+        return cell
+    }
+    
+    
+    // MARK: - naviation & custom views
     
     func showMainVC() {
         keepScanning = false
@@ -835,6 +902,32 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
 //        btInstructionsLabel.text = "Bluetooth LE is turned on and ready for communication.\n\nSearching for device..."
     }
     
+    
+    func checkForDeviceAndSetupImages() {
+        
+        houseImageView.contentMode = .center
+        var houseImage: UIImage = UIImage.init(named: "house.png")!
+        houseImageView.image = houseImage
+        toggleToolBar(enabled: false)
+        
+        if !connectedDeviceName.isEmpty {
+            if let savedImages: String = retrieveFromDefaults(key: connectedDeviceName) as? String {
+                let savedImagesArray:[String] = savedImages.components(separatedBy: ",")
+                houseImage = convertBase64ToImage(base64String: savedImagesArray[0])
+                let mainImage:UIImage = convertBase64ToImage(base64String: savedImagesArray[1])
+                houseImageView.image = houseImage
+                houseImageView.contentMode = .scaleAspectFill
+                mainImageView.image = mainImage
+                tempImageView.image = mainImage
+                toggleToolBar(enabled: true)
+            } else {
+                print("NO SAVED IMAGES")
+            }
+        } else {
+            print("NO CONNECTED DEVICE")
+        }
+    }
+    
     func toggleTryAgain(on: Bool) {
         if on {
             tryAgainButton.isHidden = false
@@ -844,6 +937,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             tryAgainButton.isHidden = true
             btImageView.image = UIImage(named: "magnifying-glass")
         }
+    }
+    
+    func toggleTableView(show: Bool) {
+        btTableView.isHidden = !show
+        btImageView.isHidden = show
+        btTableView.backgroundColor = .clear
+        btTableView.separatorStyle = .none
+        
     }
     
     
@@ -864,6 +965,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     func showbtSetupView() {
+        btTableView.isHidden = true
         spinner.isHidden = false
         skipSetupButton.setTitle("SKIP SETUP", for: .normal)
         blurView.alpha = 0.0
@@ -902,11 +1004,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             let optionsViewController = segue.destination as! OptionsViewController
             optionsViewController.delegate = self
             optionsViewController.isConnected = isConnected
-            print("IS CONNECTED: \(isConnected)")
+            optionsViewController.isOn = isOn
+            if !connectedDeviceName.isEmpty {
+                optionsViewController.connectedDeviceName = connectedDeviceName
+            }
         }
     }
 
 }
+
+// MARK: - ViewController extensions
 
 extension ViewController:SettingsViewControllerDelegate {
     func settingsViewControllerFinished(_ settingsViewController: SettingsViewController) {
@@ -961,6 +1068,17 @@ extension ViewController:OptionsViewControllerDelegate {
             skipSetupButton.setTitle("CANCEL", for: .normal)
             btImageView.image = UIImage(named: "disconnect")
         }
+        
+        if optionsViewController.turnOnSelected {
+            // turn lights on via BLE
+            print("TURN LIGHTS ON")
+            isOn = true
+        } else if optionsViewController.turnOffSelected {
+            // turn lights off via BLE
+            print("TURN LIGHTS OFF")
+            isOn = false
+        }
+
     }
 }
 

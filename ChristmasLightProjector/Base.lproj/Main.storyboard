@@ -288,14 +288,41 @@
                                                 <constraint firstAttribute="bottom" secondItem="dld-yJ-zhY" secondAttribute="bottom" constant="8" id="xZZ-vH-Ald"/>
                                             </constraints>
                                         </view>
+                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="M1a-2Y-Tss">
+                                            <rect key="frame" x="33" y="92" width="309" height="422"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <prototypes>
+                                                <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="cgB-qG-Quv" style="IBUITableViewCellStyleDefault" id="927-Mg-Baw">
+                                                    <rect key="frame" x="0.0" y="28" width="309" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="927-Mg-Baw" id="fH6-H0-eDd">
+                                                        <rect key="frame" x="0.0" y="0.0" width="309" height="43.5"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <subviews>
+                                                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cgB-qG-Quv">
+                                                                <rect key="frame" x="15" y="0.0" width="279" height="43.5"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" red="1" green="0.99502784010000001" blue="0.81122326850000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </tableViewCellContentView>
+                                                </tableViewCell>
+                                            </prototypes>
+                                        </tableView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="oDT-pJ-WAv" secondAttribute="trailing" constant="33" id="6Fl-Ex-Q3X"/>
+                                        <constraint firstItem="2As-uh-HER" firstAttribute="top" secondItem="M1a-2Y-Tss" secondAttribute="bottom" constant="26" id="J2T-Aj-4i9"/>
                                         <constraint firstAttribute="bottom" secondItem="oDT-pJ-WAv" secondAttribute="bottom" constant="16" id="JkM-jF-nfm"/>
                                         <constraint firstItem="oDT-pJ-WAv" firstAttribute="top" secondItem="yp6-nV-vCC" secondAttribute="top" constant="16" id="Szr-Yv-ba0"/>
+                                        <constraint firstItem="M1a-2Y-Tss" firstAttribute="leading" secondItem="yp6-nV-vCC" secondAttribute="leading" constant="33" id="Ud7-tH-pSx"/>
                                         <constraint firstItem="oDT-pJ-WAv" firstAttribute="centerY" secondItem="yp6-nV-vCC" secondAttribute="centerY" id="VIB-Gr-4Sv"/>
+                                        <constraint firstAttribute="trailing" secondItem="M1a-2Y-Tss" secondAttribute="trailing" constant="33" id="WHh-J5-d5N"/>
                                         <constraint firstItem="oDT-pJ-WAv" firstAttribute="centerX" secondItem="yp6-nV-vCC" secondAttribute="centerX" id="j4W-12-ZxW"/>
                                         <constraint firstItem="oDT-pJ-WAv" firstAttribute="leading" secondItem="yp6-nV-vCC" secondAttribute="leading" constant="33" id="s02-kT-xNE"/>
+                                        <constraint firstItem="M1a-2Y-Tss" firstAttribute="top" secondItem="MNF-I3-UO9" secondAttribute="bottom" constant="47" id="wYi-y5-TOn"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="dark"/>
@@ -337,6 +364,7 @@
                         <outlet property="blurView" destination="sz9-Pp-YdF" id="lkq-ff-mbp"/>
                         <outlet property="btImageView" destination="awV-RD-9gG" id="yOL-3c-BUw"/>
                         <outlet property="btInstructionsLabel" destination="MNF-I3-UO9" id="bil-yB-COI"/>
+                        <outlet property="btTableView" destination="M1a-2Y-Tss" id="tT1-PW-4Va"/>
                         <outlet property="clearButton" destination="jNR-iD-Ndp" id="EH2-Y9-Zge"/>
                         <outlet property="colorButton" destination="ef7-CE-ryd" id="0X3-AZ-NG2"/>
                         <outlet property="contentView" destination="83K-Ss-Env" id="CSy-Yh-gj5"/>
@@ -513,7 +541,6 @@
                         <outlet property="mainImageView" destination="eoY-3T-ZKI" id="pgr-sE-4lp"/>
                         <outlet property="spinner" destination="SBp-RP-hTl" id="QzN-1M-SXF"/>
                         <outlet property="textLabel" destination="3yx-Xz-BMC" id="En0-aJ-0YL"/>
-                        <segue destination="vXZ-lx-hvc" kind="show" identifier="showMainVC" id="ELX-qe-ryD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Pj-HE-Fvp" userLabel="First Responder" sceneMemberID="firstResponder"/>

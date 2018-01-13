@@ -11,7 +11,6 @@ import UIKit
 
 class WaitingViewController: UIViewController {
     
-    let kShowMainVCSegueId = "showMainVC"
     
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -37,7 +36,7 @@ class WaitingViewController: UIViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: Any) {
-        self.performSegue(withIdentifier: self.kShowMainVCSegueId, sender: self)
+        dismiss(animated: true, completion: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
