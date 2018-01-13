@@ -244,16 +244,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     @IBAction func lineButtonTapped(_ sender: Any) {
         
+        self.lineSelected = true
+        self.lineButton.setImage(UIImage(named:"lineSelected"), for: .normal)
+        self.pencilSelected = false
+        self.pencilButton.setImage(UIImage(named:"stroke"), for: .normal)
+        self.shapeSelected = false
+        self.shapeButton.setImage(UIImage(named:"star"), for: .normal)
+        
         let alert = UIAlertController.init(title: "Straight Line", message: "Tap 2 different points on the screen to set the starting and ending point of each straight line.", preferredStyle: .alert)
         
-        let okAction = UIAlertAction.init(title: "OK", style: .default) { (okAction) in
-            self.lineSelected = true
-            self.lineButton.setImage(UIImage(named:"lineSelected"), for: .normal)
-            self.pencilSelected = false
-            self.pencilButton.setImage(UIImage(named:"stroke"), for: .normal)
-            self.shapeSelected = false
-            self.shapeButton.setImage(UIImage(named:"star"), for: .normal)
-        }
+        let okAction = UIAlertAction.init(title: "OK", style: .default) { (okAction) in }
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
@@ -484,7 +484,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             let numberOfSegments = Int(floor(dist / value)) // number of segments to render
             
             let nextPoint = getNextPoint(startPoint: fromPoint, endPoint: toPoint, value: value)
-            let val:Int = Int(floor(value))
 //            let filteredPoints = stride(from:0, to: points.count, by: (numberOfSegments)).map { points[$0] }
             
             pointA = fromPoint
@@ -522,11 +521,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 path.stroke()
                 
                 pointA = pointB
-//                if i < (numberOfSegments - 1) {
                 pointB = getNextPoint(startPoint: pointA, endPoint: toPoint, value: value)
-//                } else {
-//                    pointB = toPoint
-//                }
             }
         } else {
             let path = UIBezierPath()

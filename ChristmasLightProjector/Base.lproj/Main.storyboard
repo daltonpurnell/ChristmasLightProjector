@@ -375,13 +375,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IaX-rz-KGd">
-                                <rect key="frame" x="304" y="20" width="55" height="30"/>
+                                <rect key="frame" x="329" y="20" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="DTX-e1-SQS"/>
-                                    <constraint firstAttribute="width" constant="55" id="jn3-Rv-Qgn"/>
+                                    <constraint firstAttribute="width" constant="30" id="jn3-Rv-Qgn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Cancel">
+                                <state key="normal" image="close">
                                     <color key="titleColor" red="0.496519506" green="0.54917502399999996" blue="0.5535933971" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
@@ -392,7 +392,7 @@
                                 <rect key="frame" x="0.0" y="65" width="375" height="602"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="Yha-yr-jWj" style="IBUITableViewCellStyleDefault" id="Wlk-eQ-kZf">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="Yha-yr-jWj" style="IBUITableViewCellStyleDefault" id="Wlk-eQ-kZf">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Wlk-eQ-kZf" id="DgW-fA-7zg">
@@ -403,7 +403,7 @@
                                                     <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" red="1" green="0.99502784010000001" blue="0.81122326850000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -415,7 +415,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yzu-z8-kBE">
                                 <rect key="frame" x="0.0" y="24" width="375" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="1" green="0.99502784010000001" blue="0.81122326850000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -933,6 +933,7 @@
         <image name="candyCaneGray" width="50" height="50"/>
         <image name="christmasTreeGray" width="32" height="32"/>
         <image name="circleGray" width="50" height="50"/>
+        <image name="close" width="50" height="50"/>
         <image name="color-blue" width="94" height="104"/>
         <image name="color-green" width="98" height="110"/>
         <image name="color-red" width="96" height="104"/>

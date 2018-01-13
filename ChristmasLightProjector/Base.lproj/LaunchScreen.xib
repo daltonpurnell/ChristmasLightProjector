@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,22 +15,42 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Christmas Lights" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kId-c2-rCX">
-                    <rect key="frame" x="20" y="140" width="441" height="43"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="red-background" translatesAutoresizingMaskIntoConstraints="NO" id="RBx-qn-pWj">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ProjectUrLights" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kId-c2-rCX">
+                    <rect key="frame" x="20" y="118.5" width="441" height="43"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="1" green="0.99502784010000001" blue="0.81122326850000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="christmas-light-bulb" translatesAutoresizingMaskIntoConstraints="NO" id="Qjz-a5-LJk">
+                    <rect key="frame" x="177.5" y="177.5" width="125" height="125"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="125" id="4zE-iV-gdp"/>
+                        <constraint firstAttribute="height" constant="125" id="hlA-i6-Ewv"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="kId-c2-rCX" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="bottom" multiplier="1/3" constant="1" id="5cJ-9S-tgC"/>
+                <constraint firstItem="RBx-qn-pWj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="130-JJ-kWd"/>
+                <constraint firstItem="Qjz-a5-LJk" firstAttribute="top" secondItem="kId-c2-rCX" secondAttribute="bottom" constant="16" id="Aox-Rv-IQg"/>
+                <constraint firstAttribute="bottom" secondItem="RBx-qn-pWj" secondAttribute="bottom" id="FAc-Mg-Q1i"/>
                 <constraint firstAttribute="centerX" secondItem="kId-c2-rCX" secondAttribute="centerX" id="Koa-jz-hwk"/>
+                <constraint firstItem="Qjz-a5-LJk" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="P5D-9I-hYe"/>
+                <constraint firstItem="Qjz-a5-LJk" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="XOv-mn-KmB"/>
+                <constraint firstItem="RBx-qn-pWj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="dhB-6T-EJj"/>
                 <constraint firstItem="kId-c2-rCX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="fvb-Df-36g"/>
+                <constraint firstAttribute="trailing" secondItem="RBx-qn-pWj" secondAttribute="trailing" id="xkF-iH-UXK"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="548" y="455"/>
         </view>
     </objects>
+    <resources>
+        <image name="christmas-light-bulb" width="512" height="512"/>
+        <image name="red-background" width="512" height="512"/>
+    </resources>
 </document>

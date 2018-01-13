@@ -21,6 +21,8 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var isConnected = false
     var options:[String] = []
+    var icons: [String] = []
+    
     var disconnectSelected = false
     var connectSelected = false
     
@@ -28,9 +30,21 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        
+        view.backgroundColor = .black
+        let imageView: UIImageView = UIImageView.init(frame: CGRect(x: view.frame.origin.x, y: view.frame.origin.y, width: view.frame.size.width, height: view.frame.size.height))
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "night-sky")
+        imageView.alpha = 0.6
+        
+        view.addSubview(imageView)
+        view.sendSubview(toBack: imageView)
         
         let connectTitle = isConnected ? "Disconnect from Device" : "Connect to Device"
         options = [connectTitle, "Send Feedback"]
+        icons = ["bluetooth", "feedback"]
         
     }
     
@@ -43,9 +57,15 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
         return options.count
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell") as! UITableViewCell
+        cell.backgroundColor = .clear
         cell.textLabel?.text = options[indexPath.row]
+        cell.imageView?.image = UIImage(named:(icons[indexPath.row]))
         return cell
     }
     
