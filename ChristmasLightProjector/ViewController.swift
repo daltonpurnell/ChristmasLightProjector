@@ -70,6 +70,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     var lastPoint = CGPoint.zero
     var firstLinePoint = CGPoint.zero
     var secondLinePoint = CGPoint.zero
+    
+    var pointA = CGPoint.zero
+    var pointB = CGPoint.zero
 
     var red: CGFloat = 234.0/255.0
     var green: CGFloat = 13.0/255.0
@@ -342,6 +345,53 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             images.removeAll()
         }
     }
+    
+    func distance(_ a: CGPoint, _ b: CGPoint) -> CGFloat {
+        let xDist = a.x - b.x
+        let yDist = a.y - b.y
+        return CGFloat(sqrt((xDist * xDist) + (yDist * yDist)))
+    }
+    
+    func findAllPointsBetweenTwoPoints(startPoint : CGPoint, endPoint : CGPoint, value: CGFloat) -> [CGPoint] {
+        var allPoints :[CGPoint] = [CGPoint]()
+        
+        let deltaX = fabs(endPoint.x - startPoint.x)
+        let deltaY = fabs(endPoint.y - startPoint.y)
+        
+        var x = startPoint.x
+        var y = startPoint.y
+        var err = deltaX-deltaY
+        
+        
+        var sx = -value
+        var sy = -value
+        if(startPoint.x<endPoint.x){
+            sx = value
+        }
+        if(startPoint.y<endPoint.y){
+            sy = value
+        }
+        
+        repeat {
+            let pointObj = CGPoint(x: x, y: y)
+            allPoints.append(pointObj)
+            
+            let e = 2*err
+            if(e > -deltaY)
+            {
+                err -= deltaY
+                x += CGFloat(sx)
+            }
+            if(e < deltaX)
+            {
+                err += deltaX
+                y += CGFloat(sy)
+            }
+        } while (round(x)  != round(endPoint.x) && round(y) != round(endPoint.y));
+        allPoints.append(endPoint)
+        
+        return allPoints
+    }
 
     
     func drawShape(fromPoint: CGPoint, toPoint: CGPoint) {
@@ -446,24 +496,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         tempImageView.image?.draw(in: CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height))
         
-        let path = UIBezierPath()
-        path.move(to: fromPoint)
-        path.addLine(to: toPoint)
-        path.lineWidth = brushWidth
-        
-        let dashes: [CGFloat] = [0, path.lineWidth * 2]
-        path.setLineDash(dashes, count: dashes.count, phase: 0)
-        path.lineCapStyle = CGLineCap.round
-        
-        var color = UIColor(red: red, green: green, blue: blue, alpha: 1.0)
-        
         if isRandomColor {
-            
-            if counter >= 4 {
-                counter = 0
-            } else {
-                counter += 1
-            }
             
             let colors: [(CGFloat, CGFloat, CGFloat)] = [
                 (234.0/255.0, 13.0/255.0, 43.0/255.0),
@@ -473,17 +506,73 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 (255.0/255.0, 254.0/255.0, 208.0/255.0),
                 ]
             
-            let randomColor: (CGFloat, CGFloat, CGFloat) = colors[counter]
+            var color = UIColor(red: red, green: green, blue: blue, alpha: 1.0)
             
-            var redd: CGFloat = 1.0
-            var greenn: CGFloat = 1.0
-            var bluee: CGFloat = 0.0
+            let value = brushWidth * 2
+            let dist = distance(fromPoint, toPoint)
+            let numberOfSegments = Int(floor(dist / value)) // number of segments to render
             
-            (redd, greenn, bluee) = randomColor
-            color = UIColor(red: redd, green: greenn, blue: bluee, alpha: 1.0)
+            let points = findAllPointsBetweenTwoPoints(startPoint: fromPoint, endPoint: toPoint, value: value)
+            let val:Int = Int(floor(value))
+//            let filteredPoints = stride(from:0, to: points.count, by: (numberOfSegments)).map { points[$0] }
+            
+            pointA = fromPoint
+            pointB = points[1]
+            
+//            let values:[CGFloat] = Array(repeating: value, count: numberOfSegments)
+//            var cumulativeValue:CGFloat = 0 // store a cumulative value in order to start each line after the last one
+            for i in 0..<numberOfSegments {
+                
+                if counter >= 4 {
+                    counter = 0
+                } else {
+                    counter += 1
+                }
+                
+                let randomColor: (CGFloat, CGFloat, CGFloat) = colors[counter]
+                
+                var redd: CGFloat = 1.0
+                var greenn: CGFloat = 1.0
+                var bluee: CGFloat = 0.0
+                
+                (redd, greenn, bluee) = randomColor
+                color = UIColor(red: redd, green: greenn, blue: bluee, alpha: 1.0)
+                
+                let path = UIBezierPath()
+                path.move(to: pointA)
+                path.addLine(to: pointB)
+                path.lineWidth = brushWidth
+                
+                let dashes: [CGFloat] = [0, path.lineWidth * 2]
+                path.setLineDash(dashes, count: dashes.count, phase: 0)
+                path.lineCapStyle = CGLineCap.round
+                
+                color.setStroke()
+                path.stroke()
+                
+                pointA = pointB
+//                if i < (numberOfSegments - 1) {
+                pointB = points[i]
+//                } else {
+//                    pointB = toPoint
+//                }
+            }
+        } else {
+            let path = UIBezierPath()
+            path.move(to: fromPoint)
+            path.addLine(to: toPoint)
+            path.lineWidth = brushWidth
+            
+            let dashes: [CGFloat] = [0, path.lineWidth * 2]
+            path.setLineDash(dashes, count: dashes.count, phase: 0)
+            path.lineCapStyle = CGLineCap.round
+            
+            var color = UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+            
+            color.setStroke()
+            path.stroke()
         }
-        color.setStroke()
-        path.stroke()
+
         
         tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         tempImageView.alpha = opacity
