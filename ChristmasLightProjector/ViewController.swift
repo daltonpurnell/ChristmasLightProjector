@@ -352,45 +352,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         return CGFloat(sqrt((xDist * xDist) + (yDist * yDist)))
     }
     
-    func findAllPointsBetweenTwoPoints(startPoint : CGPoint, endPoint : CGPoint, value: CGFloat) -> [CGPoint] {
-        var allPoints :[CGPoint] = [CGPoint]()
+    func getNextPoint(startPoint : CGPoint, endPoint : CGPoint, value: CGFloat) -> CGPoint {
         
-        let deltaX = fabs(endPoint.x - startPoint.x)
-        let deltaY = fabs(endPoint.y - startPoint.y)
-        
-        var x = startPoint.x
-        var y = startPoint.y
-        var err = deltaX-deltaY
-        
-        
-        var sx = -value
-        var sy = -value
-        if(startPoint.x<endPoint.x){
-            sx = value
-        }
-        if(startPoint.y<endPoint.y){
-            sy = value
-        }
-        
-        repeat {
-            let pointObj = CGPoint(x: x, y: y)
-            allPoints.append(pointObj)
-            
-            let e = 2*err
-            if(e > -deltaY)
-            {
-                err -= deltaY
-                x += CGFloat(sx)
-            }
-            if(e < deltaX)
-            {
-                err += deltaX
-                y += CGFloat(sy)
-            }
-        } while (round(x)  != round(endPoint.x) && round(y) != round(endPoint.y));
-        allPoints.append(endPoint)
-        
-        return allPoints
+        // calculate the radians
+        let radians: CGFloat = atan2(endPoint.y - startPoint.y, endPoint.x - startPoint.x)
+        //Then get the coordinates
+        let x: CGFloat = startPoint.x + value * cos(radians)
+        let y: CGFloat = startPoint.y + value * sin(radians)
+        let nextPoint:CGPoint = CGPoint(x:x, y: y)
+
+        return nextPoint
     }
 
     
@@ -512,12 +483,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             let dist = distance(fromPoint, toPoint)
             let numberOfSegments = Int(floor(dist / value)) // number of segments to render
             
-            let points = findAllPointsBetweenTwoPoints(startPoint: fromPoint, endPoint: toPoint, value: value)
+            let nextPoint = getNextPoint(startPoint: fromPoint, endPoint: toPoint, value: value)
             let val:Int = Int(floor(value))
 //            let filteredPoints = stride(from:0, to: points.count, by: (numberOfSegments)).map { points[$0] }
             
             pointA = fromPoint
-            pointB = points[1]
+            pointB = nextPoint
             
 //            let values:[CGFloat] = Array(repeating: value, count: numberOfSegments)
 //            var cumulativeValue:CGFloat = 0 // store a cumulative value in order to start each line after the last one
@@ -552,7 +523,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 
                 pointA = pointB
 //                if i < (numberOfSegments - 1) {
-                pointB = points[i]
+                pointB = getNextPoint(startPoint: pointA, endPoint: toPoint, value: value)
 //                } else {
 //                    pointB = toPoint
 //                }
