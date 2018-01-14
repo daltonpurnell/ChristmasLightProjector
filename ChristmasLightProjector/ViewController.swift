@@ -854,6 +854,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         btInstructionsLabel.text = "Disconnected"
         btImageView.image = UIImage(named: "check-mark")
         isConnected = false
+        connectedDeviceName = ""
         if error != nil {
             print("****** DISCONNECTION DETAILS: \(error!.localizedDescription)")
         }
@@ -890,6 +891,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         keepScanning = false
         centralManager.stopScan()
         hidebtSetupView()
+        checkForDeviceAndSetupImages()
     }
     
     @IBAction func skipSetupButtonTapped(_ sender: Any) {

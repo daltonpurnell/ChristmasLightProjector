@@ -8,12 +8,13 @@
 
 import Foundation
 import UIKit
+import MessageUI
 
 protocol OptionsViewControllerDelegate: class {
     func optionsViewControllerFinished(_ optionsViewController: OptionsViewController)
 }
 
-class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate {
     
     weak var delegate: OptionsViewControllerDelegate?
     
@@ -51,6 +52,8 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
         let onOffSwitchImage = isOn ? "switch-on" : "switch-off"
         options = [onOffTitle, connectTitle, "Send Feedback"]
         icons = [onOffSwitchImage, "bluetooth", "feedback"]
+        
+        
         
     }
     
@@ -100,13 +103,41 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         } else if indexPath.row == 2 {
             // launch feedback form
+            launchFeedBackEmailController()
         }
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
+    
+    func launchFeedBackEmailController() {
+        let mailComposeViewController = configuredMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            showSendMailErrorAlert()
+        }
+    }
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        mailComposerVC.setToRecipients(["dalton.purnell61@gmail.com"])
+        mailComposerVC.setSubject("Smart Lights Feedback")
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
 
+        let alert:UIAlertController = UIAlertController(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
     
-    
+    // MARK: MFMailComposeViewControllerDelegate Method
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
 }
