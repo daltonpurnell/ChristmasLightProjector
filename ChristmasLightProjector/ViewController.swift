@@ -863,6 +863,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // MARK: - tableView delegate & datasource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         toggleTableView(show: false)
+        btImageView.image = UIImage(named: "connecting")
 
         // save a reference to the sensor tag
         sensorTag = peripherals[indexPath.row]
