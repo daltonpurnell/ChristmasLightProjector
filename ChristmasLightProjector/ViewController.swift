@@ -98,14 +98,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     var pickerController = UIImagePickerController()
     
     var centralManager:CBCentralManager!
-    var sensorTag:CBPeripheral?
+    var connectedDevice:CBPeripheral?
+    var lightImageCharacteristic:CBCharacteristic?
     var keepScanning = true
     var isConnected = false
     var isOn = true
     var peripherals:[CBPeripheral] = []
     var connectedDeviceName = ""
-    
-    let sensorTagName = "CC2650 SensorTag"
     
     override func viewDidLoad() {
         counter = 0
@@ -349,6 +348,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 let commaSeparatedString:String = imagesArray.joined(separator:",")
                 saveToDefaults(key: connectedDeviceName, value: commaSeparatedString)
                 performSegue(withIdentifier: kShowWaitingSegueId, sender: self)
+                
+                // send mainImageDataString to projector
+                if let mainImageData = UIImagePNGRepresentation(image) {
+                    print("IMAGE DATA: \(mainImageData)")
+                    if let char = lightImageCharacteristic {
+                        connectedDevice?.writeValue(mainImageData, for: char, type: .withResponse)
+                    }
+                }
             }
         }
     }
@@ -772,8 +779,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             
             print("NEXT PERIPHERAL UUID: \(peripheral.identifier.uuidString)")
             btInstructionsLabel.text = "Choose a device to connect to"
-            //            if peripheralName == sensorTagName {
-//            print("SENSOR TAG FOUND! ADDING NOW!!!")
             // to save power, stop scanning for other devices
             keepScanning = false
             //                disconnectButton.enabled = true
@@ -790,7 +795,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         btInstructionsLabel.text = "Connected to \(connectedDeviceName)"
         checkForDeviceAndSetupImages()
         // uncomment discoverServices when we know what services to look for
-        //        peripheral.discoverServices(nil)
+        peripheral.discoverServices(nil)
         
     }
     
@@ -831,14 +836,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             //            var enableValue:UInt8 = 1
             //            let enableBytes = NSData(bytes: &enableValue, length: MemoryLayout<UInt8>.size)
             for characteristic in characteristics {
-                print("characteristic: \(characteristic)")
-                //                btInstructionsLabel.text?.append("\n\(characteristic.uuid)")
+                print("CHARACTERISTIC: \(characteristic)")
+//                if characteristic.uuid == CBUUID(string: "Light Image") {
+                    lightImageCharacteristic = characteristic
+//                }
             }
         }
     }
     
     func disconnect() {
-        if let sensorTag = self.sensorTag {
+        if let connectedDevice = self.connectedDevice {
             
             /*
              NOTE: The cancelPeripheralConnection: method is nonblocking, and any CBPeripheral class commands
@@ -849,7 +856,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
              From your app’s perspective, however, the peripheral is considered disconnected, and the central manager
              object calls the centralManager:didDisconnectPeripheral:error: method of its delegate object.
              */
-            centralManager.cancelPeripheralConnection(sensorTag)
+            centralManager.cancelPeripheralConnection(connectedDevice)
         }
     }
     
@@ -864,7 +871,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         if error != nil {
             print("****** DISCONNECTION DETAILS: \(error!.localizedDescription)")
         }
-        sensorTag = nil
+        connectedDevice = nil
     }
     
     // MARK: - tableView delegate & datasource
@@ -873,10 +880,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         btImageView.image = UIImage(named: "connecting")
 
         // save a reference to the sensor tag
-        sensorTag = peripherals[indexPath.row]
-        sensorTag!.delegate = self
+        connectedDevice = peripherals[indexPath.row]
+        connectedDevice!.delegate = self
         // Request a connection to the peripheral
-        centralManager.connect(sensorTag!, options: nil)
+        centralManager.connect(connectedDevice!, options: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
