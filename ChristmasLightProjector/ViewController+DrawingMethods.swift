@@ -47,6 +47,25 @@ extension ViewController {
     }
     
     
+    func drawLightShape(pointA: CGPoint, brushWidth: CGFloat, color: UIColor) {
+        let bezier5Path = UIBezierPath()
+        
+        //                bezier5Path.move(to: CGPoint(x: 3.79, y: 9.09))
+        bezier5Path.move(to:pointA)
+        bezier5Path.addLine(to: CGPoint(x: pointA.x - (1.72 * brushWidth), y: pointA.y - (0.29 * brushWidth)))
+        bezier5Path.addCurve(to: CGPoint(x: pointA.x - (2.22 * brushWidth), y: pointA.y - (3.82 * brushWidth)), controlPoint1: CGPoint(x: pointA.x - (1.72 * brushWidth), y: pointA.y - (0.29 * brushWidth)), controlPoint2: CGPoint(x: pointA.x - (3.12 * brushWidth), y: pointA.y - (1.65 * brushWidth)))
+        
+        bezier5Path.addCurve(to: CGPoint(x: pointA.x + (0.33 * brushWidth), y: pointA.y - (6.78 * brushWidth)), controlPoint1: CGPoint(x: pointA.x - (2.22 * brushWidth), y: pointA.y - (3.82 * brushWidth)), controlPoint2: CGPoint(x: pointA.x - (0.83 * brushWidth), y: pointA.y - (6.92 * brushWidth)))
+        
+        bezier5Path.addCurve(to: CGPoint(x: pointA.x + (1.74 * brushWidth), y: pointA.y - (3.35 * brushWidth)), controlPoint1: CGPoint(x: pointA.x + (0.33 * brushWidth), y: pointA.y - (6.78 * brushWidth)), controlPoint2: CGPoint(x: pointA.x + (1.52 * brushWidth), y: pointA.y - (6.89 * brushWidth)))
+        
+        bezier5Path.addCurve(to: CGPoint(x: pointA.x, y: pointA.y), controlPoint1: CGPoint(x: pointA.x + (1.74 * brushWidth), y: pointA.y - (3.35 * brushWidth)), controlPoint2: CGPoint(x: pointA.x + (2.02 * brushWidth), y: pointA.y - (0.97 * brushWidth)))
+        bezier5Path.close()
+        color.setFill()
+        bezier5Path.fill()
+    }
+    
+    
     
     func drawStar(center: CGPoint, ctx: CGContext) {
         

@@ -461,45 +461,77 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         UIGraphicsBeginImageContext(contentView.frame.size)
         
         tempImageView.image?.draw(in: CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height))
-
-        let path = UIBezierPath()
-        path.move(to: fromPoint)
-        path.addLine(to: toPoint)
-        path.lineWidth = brushWidth
         
-        let dashes: [CGFloat] = [0, path.lineWidth * 4]
-        path.setLineDash(dashes, count: dashes.count, phase: 0)
-        path.lineCapStyle = CGLineCap.round
+        let colors: [(CGFloat, CGFloat, CGFloat)] = [
+            (234.0/255.0, 13.0/255.0, 43.0/255.0),
+            (34.0/255.0, 84.0/255.0, 251.0/255.0),
+            (60.0/255.0, 218.0/255.0, 34.0/255.0),
+            (242.0/255.0, 175.0/255.0, 35.0/255.0),
+            (255.0/255.0, 254.0/255.0, 208.0/255.0),
+            ]
         
         var color = UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+        
+        pointA = fromPoint
+        pointB = toPoint
+        let bbrushWidth = brushWidth/5
 
+        if counter >= 4 {
+            counter = 0
+        } else {
+            counter += 1
+        }
+        
+        let randomColor: (CGFloat, CGFloat, CGFloat) = colors[counter]
+        
+        var redd: CGFloat = 1.0
+        var greenn: CGFloat = 1.0
+        var bluee: CGFloat = 0.0
+        
+        (redd, greenn, bluee) = randomColor
+        
         if isRandomColor {
-            
-            if counter >= 4 {
-                counter = 0
-            } else {
-                counter += 1
-            }
-            
-            let colors: [(CGFloat, CGFloat, CGFloat)] = [
-                (234.0/255.0, 13.0/255.0, 43.0/255.0),
-                (34.0/255.0, 84.0/255.0, 251.0/255.0),
-                (60.0/255.0, 218.0/255.0, 34.0/255.0),
-                (242.0/255.0, 175.0/255.0, 35.0/255.0),
-                (255.0/255.0, 254.0/255.0, 208.0/255.0),
-                ]
-            
-            let randomColor: (CGFloat, CGFloat, CGFloat) = colors[counter]
-                
-            var redd: CGFloat = 1.0
-            var greenn: CGFloat = 1.0
-            var bluee: CGFloat = 0.0
-            
-            (redd, greenn, bluee) = randomColor
             color = UIColor(red: redd, green: greenn, blue: bluee, alpha: 1.0)
         }
-        color.setStroke()
-        path.stroke()
+
+        drawLightShape(pointA: pointA, brushWidth: bbrushWidth, color: color)
+
+//        let path = UIBezierPath()
+//        path.move(to: fromPoint)
+//        path.addLine(to: toPoint)
+//        path.lineWidth = brushWidth
+//
+//        let dashes: [CGFloat] = [0, path.lineWidth * 4]
+//        path.setLineDash(dashes, count: dashes.count, phase: 0)
+//        path.lineCapStyle = CGLineCap.round
+        
+//        if isRandomColor {
+//
+//            if counter >= 4 {
+//                counter = 0
+//            } else {
+//                counter += 1
+//            }
+//
+//            let colors: [(CGFloat, CGFloat, CGFloat)] = [
+//                (234.0/255.0, 13.0/255.0, 43.0/255.0),
+//                (34.0/255.0, 84.0/255.0, 251.0/255.0),
+//                (60.0/255.0, 218.0/255.0, 34.0/255.0),
+//                (242.0/255.0, 175.0/255.0, 35.0/255.0),
+//                (255.0/255.0, 254.0/255.0, 208.0/255.0),
+//                ]
+//
+//            let randomColor: (CGFloat, CGFloat, CGFloat) = colors[counter]
+//
+//            var redd: CGFloat = 1.0
+//            var greenn: CGFloat = 1.0
+//            var bluee: CGFloat = 0.0
+//
+//            (redd, greenn, bluee) = randomColor
+//            color = UIColor(red: redd, green: greenn, blue: bluee, alpha: 1.0)
+//        }
+//        color.setStroke()
+//        path.stroke()
         
         tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         tempImageView.alpha = opacity
@@ -511,8 +543,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         UIGraphicsBeginImageContext(contentView.frame.size)
         
         tempImageView.image?.draw(in: CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height))
-        
-        if isRandomColor {
             
             let colors: [(CGFloat, CGFloat, CGFloat)] = [
                 (234.0/255.0, 13.0/255.0, 43.0/255.0),
@@ -533,9 +563,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             
             pointA = fromPoint
             pointB = nextPoint
+            let bbrushWidth = brushWidth/5
             
-//            let values:[CGFloat] = Array(repeating: value, count: numberOfSegments)
-//            var cumulativeValue:CGFloat = 0 // store a cumulative value in order to start each line after the last one
             for i in 0..<numberOfSegments {
                 
                 if counter >= 4 {
@@ -551,39 +580,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 var bluee: CGFloat = 0.0
                 
                 (redd, greenn, bluee) = randomColor
-                color = UIColor(red: redd, green: greenn, blue: bluee, alpha: 1.0)
                 
-                let path = UIBezierPath()
-                path.move(to: pointA)
-                path.addLine(to: pointB)
-                path.lineWidth = brushWidth
-                
-                let dashes: [CGFloat] = [0, path.lineWidth * 2]
-                path.setLineDash(dashes, count: dashes.count, phase: 0)
-                path.lineCapStyle = CGLineCap.round
-                
-                color.setStroke()
-                path.stroke()
-                
+                if isRandomColor {
+                    color = UIColor(red: redd, green: greenn, blue: bluee, alpha: 1.0)
+                }
+
+                drawLightShape(pointA: pointA, brushWidth: bbrushWidth, color: color)
+
                 pointA = pointB
                 pointB = getNextPoint(startPoint: pointA, endPoint: toPoint, value: value)
             }
-        } else {
-            let path = UIBezierPath()
-            path.move(to: fromPoint)
-            path.addLine(to: toPoint)
-            path.lineWidth = brushWidth
-            
-            let dashes: [CGFloat] = [0, path.lineWidth * 2]
-            path.setLineDash(dashes, count: dashes.count, phase: 0)
-            path.lineCapStyle = CGLineCap.round
-            
-            var color = UIColor(red: red, green: green, blue: blue, alpha: 1.0)
-            
-            color.setStroke()
-            path.stroke()
-        }
-
         
         tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         tempImageView.alpha = opacity
