@@ -16,6 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        if  UserDefaults.standard.bool(forKey: "onboarding") == false {
+            window?.rootViewController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateInitialViewController()
+        } else {
+            window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+        }
         return true
     }
 
