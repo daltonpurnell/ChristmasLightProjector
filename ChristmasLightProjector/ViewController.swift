@@ -55,8 +55,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBOutlet weak var pencilButton: UIButton!
     @IBOutlet weak var lineButton: UIButton!
     @IBOutlet weak var clearButton: UIButton!
+    @IBOutlet weak var uploadDrawingButton: UIButton!
     
     @IBOutlet weak var uploadImageButton: UIButton!
+    
+    var isUploadingDrawing = false
     
     var counter: Int = 0
     var snowFlakeCounter: Int = 0
@@ -156,6 +159,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         submitButton.isHidden = !enabled
         startOverButton.isHidden = !enabled
         strokeButton.isHidden = !enabled
+        uploadDrawingButton.isHidden = !enabled
         colorButton.isHidden = !enabled
         clearButton.isHidden = !enabled
         shapeButton.isHidden = !enabled
@@ -184,6 +188,24 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     
     // MARK: - Camera
+    
+    func showCameraActionSheet() {
+        let alertViewController = UIAlertController(title: "", message: "Choose your option", preferredStyle: .actionSheet)
+        let camera = UIAlertAction(title: "Camera", style: .default, handler: { (alert) in
+            self.openCamera()
+        })
+        let gallery = UIAlertAction(title: "Gallery", style: .default) { (alert) in
+            self.openGallery()
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (alert) in
+            
+        }
+        alertViewController.addAction(camera)
+        alertViewController.addAction(gallery)
+        alertViewController.addAction(cancel)
+        self.present(alertViewController, animated: true, completion: nil)
+    }
+    
     func openCamera() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
             pickerController.delegate = self
@@ -212,25 +234,82 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        houseImageView.contentMode = .scaleAspectFill
-        let image: UIImage = (info[UIImagePickerControllerEditedImage] as? UIImage)!
-        houseImageView.image = image
-        toggleToolBar(enabled: true)
-        eraserButton.isEnabled = false
-        pencilSelected = true
-        lineSelected = false
-        shapeSelected = false
-        pencilButton.setImage(UIImage(named: "pencilSelected"), for: .normal)
+        if isUploadingDrawing {
+
+            if let image: UIImage = (info[UIImagePickerControllerEditedImage] as? UIImage) {
+
+                mainImageView.contentMode = .scaleAspectFill
+                mainImageView.image = image
+                
+                
+                if let mainImage = mainImageView.image {
+                    let imsize = mainImage.size
+                    let ivsize = mainImageView.bounds.size
+                    
+                    var scale : CGFloat = ivsize.width / imsize.width
+                    if imsize.height * scale < ivsize.height {
+                        scale = ivsize.height / imsize.height
+                    }
+                    
+                    let croppedImsize = CGSize(width:ivsize.width/scale, height:ivsize.height/scale)
+                    let croppedImrect =
+                        CGRect(origin: CGPoint(x: (imsize.width-croppedImsize.width)/2.0,
+                                               y: (imsize.height-croppedImsize.height)/2.0),
+                               size: croppedImsize)
+                    
+                    if #available(iOS 10.0, *) {
+                        let r = UIGraphicsImageRenderer(size:croppedImsize)
+                        let croppedIm = r.image { _ in
+                            mainImageView.image!.draw(at: CGPoint(x:-croppedImrect.origin.x, y:-croppedImrect.origin.y))
+                        }
+                        mainImageView.image = croppedIm.alpha(0.75)
+                        
+                    } else {
+                        // Fallback on earlier versions
+                        mainImageView.image = image
+                    }
+                }
+                
+                images.append(mainImageView.image!)
+                isUploadingDrawing = false
+            }
+            
+        } else {
+            houseImageView.contentMode = .scaleAspectFill
+            let image: UIImage = (info[UIImagePickerControllerEditedImage] as? UIImage)!
+            houseImageView.image = image
+            toggleToolBar(enabled: true)
+            eraserButton.isEnabled = false
+            pencilSelected = true
+            lineSelected = false
+            shapeSelected = false
+            pencilButton.setImage(UIImage(named: "pencilSelected"), for: .normal)
+        }
         dismiss(animated:true, completion: nil)
     }
     
     
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        isUploadingDrawing = false
         print("Cancel")
         dismiss(animated:true, completion: nil)
     }
     
     // MARK: - Actions
+    
+    @IBAction func uploadDrawingButtonTapped(_ sender: Any) {
+        let alert = UIAlertController.init(title: "Upload Custom Projection Image", message: "Add your own image to project onto your house.", preferredStyle: .alert)
+        let okAction = UIAlertAction.init(title: "OK", style: .default, handler: { (alert) in
+            self.isUploadingDrawing = true
+           self.showCameraActionSheet()
+        })
+        let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
     
     @IBAction func shapeButtonTapped(_ sender: Any) {
         shapeSelected = true
@@ -291,20 +370,21 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     
     @IBAction func uploadImageButtonTapped(_ sender: Any) {
-        let alertViewController = UIAlertController(title: "", message: "Choose your option", preferredStyle: .actionSheet)
-        let camera = UIAlertAction(title: "Camera", style: .default, handler: { (alert) in
-            self.openCamera()
-        })
-        let gallery = UIAlertAction(title: "Gallery", style: .default) { (alert) in
-            self.openGallery()
-        }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (alert) in
-            
-        }
-        alertViewController.addAction(camera)
-        alertViewController.addAction(gallery)
-        alertViewController.addAction(cancel)
-        self.present(alertViewController, animated: true, completion: nil)
+        showCameraActionSheet()
+//        let alertViewController = UIAlertController(title: "", message: "Choose your option", preferredStyle: .actionSheet)
+//        let camera = UIAlertAction(title: "Camera", style: .default, handler: { (alert) in
+//            self.openCamera()
+//        })
+//        let gallery = UIAlertAction(title: "Gallery", style: .default) { (alert) in
+//            self.openGallery()
+//        }
+//        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (alert) in
+//
+//        }
+//        alertViewController.addAction(camera)
+//        alertViewController.addAction(gallery)
+//        alertViewController.addAction(cancel)
+//        self.present(alertViewController, animated: true, completion: nil)
     }
 
     
@@ -680,6 +760,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
         
         UIGraphicsBeginImageContext(contentView.frame.size)
+
         mainImageView.image?.draw(in: CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height), blendMode: .normal, alpha: 1.0)
         tempImageView.image?.draw(in: CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height), blendMode: .normal, alpha: opacity)
         mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
@@ -1125,6 +1206,15 @@ extension UIImage {
         self.init(ciImage: CIImage(image: image)!)
         
     }
+    
+    func alpha(_ value:CGFloat) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(at: CGPoint.zero, blendMode: .normal, alpha: value)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
 }
+
 
 
