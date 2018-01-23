@@ -198,7 +198,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             self.openGallery()
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (alert) in
-            
+            self.isUploadingDrawing = false
         }
         alertViewController.addAction(camera)
         alertViewController.addAction(gallery)
