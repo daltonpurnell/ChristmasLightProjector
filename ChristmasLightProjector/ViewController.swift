@@ -328,14 +328,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     @IBAction func saveAndSendToProjector(_ sender: AnyObject) {
         UIGraphicsBeginImageContext(contentView.bounds.size)
+        let blackImage = UIImage(withBackground: .black)
+        blackImage.draw(in: CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height))
         mainImageView.image?.draw(in: CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height))
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         if let image = image {
-//            let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-//            present(activity, animated: true, completion: nil)
+            mainImageView.image = image
+            let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+            present(activity, animated: true, completion: nil)
             if !isConnected {
+                if let mainImageData = UIImageJPEGRepresentation(image, 0.01) {
+                    print("IMAGE DATA: \(mainImageData)")
+                }
                 let alert = UIAlertController.init(title: "Oops!", message: "You must be connected to your device", preferredStyle: .alert)
                 let okAction = UIAlertAction.init(title: "OK", style: .default, handler: nil)
                 alert.addAction(okAction)
@@ -343,17 +349,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             } else {
                 let houseImage = houseImageView.image
                 let houseImageDataString:String = convertImageToBase64(image: houseImage!)
-                let mainImageDataString:String = convertImageToBase64(image: image)
+                let mainImage = mainImageView.image
+                let mainImageDataString:String = convertImageToBase64(image: mainImage!)
                 let imagesArray:[String] = [houseImageDataString, mainImageDataString]
                 let commaSeparatedString:String = imagesArray.joined(separator:",")
                 saveToDefaults(key: connectedDeviceName, value: commaSeparatedString)
-                performSegue(withIdentifier: kShowWaitingSegueId, sender: self)
-                
-                // send mainImageDataString to projector
-                if let mainImageData = UIImagePNGRepresentation(image) {
+
+                // send mainImageData to projector
+                if let mainImageData = UIImageJPEGRepresentation(image, 0.1) {
                     print("IMAGE DATA: \(mainImageData)")
                     if let char = lightImageCharacteristic {
                         connectedDevice?.writeValue(mainImageData, for: char, type: .withResponse)
+                        performSegue(withIdentifier: kShowWaitingSegueId, sender: self)
                     }
                 }
             }
@@ -818,8 +825,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             for service in services {
                 print("Discovered service \(String(describing: service.uuid))")
                 //                 If we found either the temperature or the humidity service, discover the characteristics for those services.
-                //                if (service.UUID == CBUUID(string: UIDevice.TemperatureServiceUUID)) ||
-                //                    (service.UUID == CBUUID(string: UIDevice.HumidityServiceUUID)) {
+                //                if (service.UUID == CBUUID(string: Device.TemperatureServiceUUID)) ||
+                //                    (service.UUID == CBUUID(string: Device.HumidityServiceUUID)) {
                 peripheral.discoverCharacteristics(nil, for: service)
                 //                }
             }
@@ -837,7 +844,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             //            let enableBytes = NSData(bytes: &enableValue, length: MemoryLayout<UInt8>.size)
             for characteristic in characteristics {
                 print("CHARACTERISTIC: \(characteristic)")
-//                if characteristic.uuid == CBUUID(string: "Light Image") {
+//                if characteristic.uuid == CBUUID(string: "2349234wfhfh239r23w29384923") {
                     lightImageCharacteristic = characteristic
 //                }
             }
@@ -1097,4 +1104,27 @@ extension ViewController:OptionsViewControllerDelegate {
 
     }
 }
+
+extension UIImage {
+    
+    /**
+     Returns an UIImage with a specified background color.
+     - parameter color: The color of the background
+     */
+    convenience init(withBackground color: UIColor) {
+        
+        let rect: CGRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContext(rect.size);
+        let context:CGContext = UIGraphicsGetCurrentContext()!;
+        context.setFillColor(color.cgColor);
+        context.fill(rect)
+        
+        let image:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        self.init(ciImage: CIImage(image: image)!)
+        
+    }
+}
+
 
