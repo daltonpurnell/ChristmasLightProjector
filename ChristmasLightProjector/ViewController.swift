@@ -262,11 +262,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                         let croppedIm = r.image { _ in
                             mainImageView.image!.draw(at: CGPoint(x:-croppedImrect.origin.x, y:-croppedImrect.origin.y))
                         }
-                        mainImageView.image = croppedIm.alpha(0.75)
+                        mainImageView.image = croppedIm.alpha(0.7)
                         
                     } else {
                         // Fallback on earlier versions
-                        mainImageView.image = image
+                        mainImageView.image = image.alpha(0.7)
                     }
                 }
                 
