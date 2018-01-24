@@ -28,12 +28,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="page 1" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZcI-gG-rQt">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome! Let us keep you safe by putting your lights up for you. Start by connecting to your projector." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZcI-gG-rQt">
                                 <rect key="frame" x="16" y="20" width="343" height="94"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="94" id="8HA-OD-TTJ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="1" green="0.99502784010000001" blue="0.81122326850000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -49,13 +49,20 @@
                                     <action selector="skippTapped:" destination="zXF-2x-yZM" eventType="touchUpInside" id="rci-dC-W7h"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iphone" translatesAutoresizingMaskIntoConstraints="NO" id="MYg-DT-11t">
+                                <rect key="frame" x="16" y="122" width="343" height="447"/>
+                            </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="ZcI-gG-rQt" firstAttribute="leading" secondItem="iJK-LS-dtk" secondAttribute="leading" constant="16" id="0os-ax-csr"/>
                             <constraint firstItem="iJK-LS-dtk" firstAttribute="trailing" secondItem="rON-gL-Ydd" secondAttribute="trailing" constant="16" id="1NH-zx-ApH"/>
                             <constraint firstItem="iJK-LS-dtk" firstAttribute="bottom" secondItem="rON-gL-Ydd" secondAttribute="bottom" constant="40" id="358-F0-fmd"/>
+                            <constraint firstItem="MYg-DT-11t" firstAttribute="leading" secondItem="iJK-LS-dtk" secondAttribute="leading" constant="16" id="4j7-4V-KrL"/>
                             <constraint firstItem="iJK-LS-dtk" firstAttribute="trailing" secondItem="ZcI-gG-rQt" secondAttribute="trailing" constant="16" id="9F4-mh-2jF"/>
                             <constraint firstItem="rON-gL-Ydd" firstAttribute="leading" secondItem="iJK-LS-dtk" secondAttribute="leading" constant="16" id="MTi-Z4-QYT"/>
+                            <constraint firstItem="MYg-DT-11t" firstAttribute="top" secondItem="ZcI-gG-rQt" secondAttribute="bottom" constant="8" id="bST-t5-zas"/>
+                            <constraint firstItem="iJK-LS-dtk" firstAttribute="trailing" secondItem="MYg-DT-11t" secondAttribute="trailing" constant="16" id="eBz-cQ-cde"/>
+                            <constraint firstItem="rON-gL-Ydd" firstAttribute="top" secondItem="MYg-DT-11t" secondAttribute="bottom" constant="8" id="tZ3-y9-3Ak"/>
                             <constraint firstItem="ZcI-gG-rQt" firstAttribute="top" secondItem="iJK-LS-dtk" secondAttribute="top" id="v0A-eF-whs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="iJK-LS-dtk"/>
@@ -73,12 +80,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="page 2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Scu-KJ-VMd">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload a photo of your house, and use the toolbar to draw your Christmas lights." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Scu-KJ-VMd">
                                 <rect key="frame" x="16" y="20" width="343" height="94"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="94" id="JtZ-Sj-dZQ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="1" green="0.99502784010000001" blue="0.81122326850000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -94,13 +101,20 @@
                                     <action selector="skipTapped:" destination="pDb-1I-ygo" eventType="touchUpInside" id="fYv-b8-gz8"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iphone" translatesAutoresizingMaskIntoConstraints="NO" id="xoU-iB-TnG">
+                                <rect key="frame" x="16" y="122" width="343" height="447"/>
+                            </imageView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="xoU-iB-TnG" firstAttribute="leading" secondItem="APP-cv-LrO" secondAttribute="leading" constant="16" id="3w9-lY-b1G"/>
+                            <constraint firstItem="lYb-eX-Dyb" firstAttribute="top" secondItem="xoU-iB-TnG" secondAttribute="bottom" constant="8" id="Cig-E3-njU"/>
                             <constraint firstItem="APP-cv-LrO" firstAttribute="bottom" secondItem="lYb-eX-Dyb" secondAttribute="bottom" constant="40" id="Qdu-xb-o83"/>
                             <constraint firstItem="APP-cv-LrO" firstAttribute="trailing" secondItem="lYb-eX-Dyb" secondAttribute="trailing" constant="16" id="YTb-Pr-uBb"/>
                             <constraint firstItem="APP-cv-LrO" firstAttribute="trailing" secondItem="Scu-KJ-VMd" secondAttribute="trailing" constant="16" id="Ygf-AR-KMX"/>
                             <constraint firstItem="Scu-KJ-VMd" firstAttribute="leading" secondItem="APP-cv-LrO" secondAttribute="leading" constant="16" id="cIh-7C-0gi"/>
                             <constraint firstItem="Scu-KJ-VMd" firstAttribute="top" secondItem="APP-cv-LrO" secondAttribute="top" id="e2A-AV-F24"/>
+                            <constraint firstItem="xoU-iB-TnG" firstAttribute="top" secondItem="Scu-KJ-VMd" secondAttribute="bottom" constant="8" id="ljR-0X-tqD"/>
+                            <constraint firstItem="APP-cv-LrO" firstAttribute="trailing" secondItem="xoU-iB-TnG" secondAttribute="trailing" constant="16" id="mPO-3W-sUh"/>
                             <constraint firstItem="lYb-eX-Dyb" firstAttribute="leading" secondItem="APP-cv-LrO" secondAttribute="leading" constant="16" id="yt0-2a-zue"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="APP-cv-LrO"/>
@@ -118,12 +132,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="page 3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cd5-fp-tQh">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Or upload a custom image to project onto your house for any occasion. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cd5-fp-tQh">
                                 <rect key="frame" x="16" y="20" width="343" height="94"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="94" id="4ob-Ts-Pcu"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="1" green="0.99502784010000001" blue="0.81122326850000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -132,21 +146,28 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="7vl-Re-3t4"/>
                                 </constraints>
-                                <state key="normal" title="DONE">
+                                <state key="normal" title="GET STARTED">
                                     <color key="titleColor" red="1" green="0.99502784010000001" blue="0.81122326850000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="doneTapped:" destination="hwi-K9-oE6" eventType="touchUpInside" id="3fh-0b-XSP"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iphone" translatesAutoresizingMaskIntoConstraints="NO" id="k8i-Ek-t85">
+                                <rect key="frame" x="16" y="122" width="343" height="447"/>
+                            </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="cd5-fp-tQh" firstAttribute="leading" secondItem="7rN-ER-jTJ" secondAttribute="leading" constant="16" id="4ac-ha-fLg"/>
+                            <constraint firstItem="k8i-Ek-t85" firstAttribute="top" secondItem="cd5-fp-tQh" secondAttribute="bottom" constant="8" id="66P-W7-ag6"/>
                             <constraint firstItem="7rN-ER-jTJ" firstAttribute="bottom" secondItem="62o-Pa-1Fb" secondAttribute="bottom" constant="40" id="NJd-JT-AUq"/>
                             <constraint firstItem="7rN-ER-jTJ" firstAttribute="trailing" secondItem="62o-Pa-1Fb" secondAttribute="trailing" constant="16" id="QKW-qm-RoL"/>
+                            <constraint firstItem="k8i-Ek-t85" firstAttribute="leading" secondItem="7rN-ER-jTJ" secondAttribute="leading" constant="16" id="SrM-tw-pGD"/>
                             <constraint firstItem="7rN-ER-jTJ" firstAttribute="trailing" secondItem="cd5-fp-tQh" secondAttribute="trailing" constant="16" id="gZw-50-lMK"/>
+                            <constraint firstItem="7rN-ER-jTJ" firstAttribute="trailing" secondItem="k8i-Ek-t85" secondAttribute="trailing" constant="16" id="n7F-EI-hm3"/>
                             <constraint firstItem="62o-Pa-1Fb" firstAttribute="leading" secondItem="7rN-ER-jTJ" secondAttribute="leading" constant="16" id="o6E-Ov-jfd"/>
                             <constraint firstItem="cd5-fp-tQh" firstAttribute="top" secondItem="7rN-ER-jTJ" secondAttribute="top" id="wOX-3N-TCs"/>
+                            <constraint firstItem="62o-Pa-1Fb" firstAttribute="top" secondItem="k8i-Ek-t85" secondAttribute="bottom" constant="8" id="yjX-PH-TL4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="7rN-ER-jTJ"/>
                     </view>
@@ -173,4 +194,7 @@
             <point key="canvasLocation" x="-329" y="179"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="iphone" width="388" height="820"/>
+    </resources>
 </document>
