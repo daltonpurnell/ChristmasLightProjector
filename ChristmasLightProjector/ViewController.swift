@@ -415,9 +415,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         UIGraphicsEndImageContext()
         
         if let image = image {
-            mainImageView.image = image
-            let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-            present(activity, animated: true, completion: nil)
+//            mainImageView.image = image
+//            let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+//            present(activity, animated: true, completion: nil)
             if !isConnected {
                 if let mainImageData = UIImageJPEGRepresentation(image, 0.01) {
                     print("IMAGE DATA: \(mainImageData)")
