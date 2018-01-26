@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MessageUI
+import Mixpanel
 
 protocol OptionsViewControllerDelegate: class {
     func optionsViewControllerFinished(_ optionsViewController: OptionsViewController)
@@ -33,6 +34,9 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Mixpanel.mainInstance().track(event: "optionsViewControllerViewed")
+
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear

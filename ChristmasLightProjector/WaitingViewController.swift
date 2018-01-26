@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Mixpanel
 
 
 class WaitingViewController: UIViewController {
@@ -36,6 +37,8 @@ class WaitingViewController: UIViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: Any) {
+        Mixpanel.mainInstance().track(event: "waitingVCDoneButtonTapped")
+
         dismiss(animated: true, completion: nil)
     }
     

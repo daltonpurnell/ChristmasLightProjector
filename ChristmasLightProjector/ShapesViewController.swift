@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Mixpanel
 
 protocol ShapesViewControllerDelegate: class {
     func shapesViewControllerFinished(_ shapesViewController: ShapesViewController)
@@ -27,6 +28,13 @@ class ShapesViewController: UIViewController {
         "Tree",
         "Deer"
         ]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        Mixpanel.mainInstance().track(event: "shapesViewControllerViewed")
+
+    }
     
     @IBAction func shapeTapped(_ sender: AnyObject) {
         

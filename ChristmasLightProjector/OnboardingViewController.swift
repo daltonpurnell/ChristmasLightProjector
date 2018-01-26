@@ -8,10 +8,14 @@
 
 import Foundation
 import UIKit
+import Mixpanel
 
 class OnboardingViewcontroller : UIPageViewController {
     
     override func viewDidLoad() {
+        
+        Mixpanel.mainInstance().track(event: "onboardingViewed")
+
         // Set the dataSource and delegate in code.
         // I can't figure out how to do this in the Storyboard!
         dataSource = self

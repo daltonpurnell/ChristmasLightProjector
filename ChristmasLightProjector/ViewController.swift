@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBluetooth
+import Mixpanel
 
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, CBCentralManagerDelegate, CBPeripheralDelegate, UITableViewDelegate, UITableViewDataSource {
@@ -122,6 +123,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
 
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        Mixpanel.mainInstance().track(event: "mainViewControllerViewed")
+
         pickerController.delegate = self
         btTableView.delegate = self
         btTableView.dataSource = self
@@ -298,6 +301,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // MARK: - Actions
     
     @IBAction func uploadDrawingButtonTapped(_ sender: Any) {
+        Mixpanel.mainInstance().track(event: "uploadProjectionImageTapped")
+
         let alert = UIAlertController.init(title: "Upload Custom Projection Image", message: "Add your own image to project onto your house.", preferredStyle: .alert)
         let okAction = UIAlertAction.init(title: "OK", style: .default, handler: { (alert) in
             self.isUploadingDrawing = true
@@ -312,6 +317,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     
     @IBAction func shapeButtonTapped(_ sender: Any) {
+        Mixpanel.mainInstance().track(event: "shapeButtonTapped")
+
         shapeSelected = true
         shapeButton.setImage(UIImage(named:"starSelected"), for: .normal)
         lineSelected = false
@@ -320,6 +327,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         pencilButton.setImage(UIImage(named:"stroke"), for: .normal)
     }
     @IBAction func pencilButtonTapped(_ sender: Any) {
+        Mixpanel.mainInstance().track(event: "pencilButtonTapped")
+
         pencilSelected = true
         pencilButton.setImage(UIImage(named:"pencilSelected"), for: .normal)
         lineSelected = false
@@ -328,6 +337,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         shapeButton.setImage(UIImage(named:"star"), for: .normal)
     }
     @IBAction func lineButtonTapped(_ sender: Any) {
+        Mixpanel.mainInstance().track(event: "lineButtonTapped")
         
         self.lineSelected = true
         self.lineButton.setImage(UIImage(named:"lineSelected"), for: .normal)
@@ -345,6 +355,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     
     @IBAction func startOverButtonTapped(_ sender: Any) {
+        Mixpanel.mainInstance().track(event: "startOverButtonTapped")
         
         let alert = UIAlertController.init(title: "Start Over?", message: "Are you sure you want to start over? Your photo and drawing will both be erased. This cannot be undone.", preferredStyle: .alert)
         
@@ -370,6 +381,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     
     @IBAction func uploadImageButtonTapped(_ sender: Any) {
+        Mixpanel.mainInstance().track(event: "uploadHouseImageButtonTapped")
+
         showCameraActionSheet()
 //        let alertViewController = UIAlertController(title: "", message: "Choose your option", preferredStyle: .actionSheet)
 //        let camera = UIAlertAction(title: "Camera", style: .default, handler: { (alert) in
@@ -389,6 +402,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
 
     
     @IBAction func reset(_ sender: AnyObject) {
+        Mixpanel.mainInstance().track(event: "deleteDrawingButtonTapped")
+
         
         let alert = UIAlertController.init(title: "Delete?", message: "Are you sure you want to delete your drawing? Your photo will remain, but your drawing will be erased. This cannot be undone.", preferredStyle: .alert)
         
@@ -407,6 +422,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     @IBAction func saveAndSendToProjector(_ sender: AnyObject) {
+        Mixpanel.mainInstance().track(event: "sendDrawingToProjectorTapped")
+
         UIGraphicsBeginImageContext(contentView.bounds.size)
         let blackImage = UIImage(withBackground: .black)
         blackImage.draw(in: CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height))
@@ -448,6 +465,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     @IBAction func undoPressed(_ sender: AnyObject) {
+        Mixpanel.mainInstance().track(event: "undoButtonTapped")
         
         if images.count >= 2 {
             mainImageView.image = images[images.count - 2]
@@ -964,6 +982,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     // MARK: - tableView delegate & datasource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        Mixpanel.mainInstance().track(event: "BLE Device Selected",
+                                      properties: ["Name" : peripherals[indexPath.row].name!])
         toggleTableView(show: false)
         btImageView.image = UIImage(named: "connecting")
 
@@ -996,10 +1016,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     @IBAction func skipSetupButtonTapped(_ sender: Any) {
+        Mixpanel.mainInstance().track(event: "skipSetupButtonTapped")
         showMainVC()
     }
     
     @IBAction func tryAgainButtonTapped(_ sender: Any) {
+        Mixpanel.mainInstance().track(event: "tryAgainButtonTapped")
+
 //        toggleTryAgain(on: false)
 //        resumeScan()
         viewDidLoad()

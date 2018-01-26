@@ -1,4 +1,5 @@
 import UIKit
+import Mixpanel
 
 protocol SettingsViewControllerDelegate: class {
     func settingsViewControllerFinished(_ settingsViewController: SettingsViewController)
@@ -23,6 +24,8 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        Mixpanel.mainInstance().track(event: "pencilWidthViewControllerViewed")
+
     }
     
     override func viewWillAppear(_ animated: Bool) {

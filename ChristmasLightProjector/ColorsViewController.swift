@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Mixpanel
 
 protocol ColorsViewControllerDelegate: class {
     func colorsViewControllerFinished(_ colorsViewController: ColorsViewController)
@@ -30,6 +31,13 @@ class ColorsViewController: UIViewController {
         (255.0/255.0, 254.0/255.0, 208.0/255.0),
         (1.0, 1.0, 1.0),
         ]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        Mixpanel.mainInstance().track(event: "colorsViewControllerViewed")
+
+    }
 
     @IBAction func colorPressed(_ sender: AnyObject) {
         var index = sender.tag ?? 0

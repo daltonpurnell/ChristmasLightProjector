@@ -1,0 +1,6 @@
+framework module Pods_ChristmasLightProjectorTests {
+  umbrella header "Pods-ChristmasLightProjectorTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
