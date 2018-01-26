@@ -26,6 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         Mixpanel.initialize(token: mixpanelToken)
+        if let uuid = UIDevice.current.identifierForVendor?.uuidString {
+            Mixpanel.mainInstance().identify(distinctId: uuid)
+        }
+
         return true
     }
 

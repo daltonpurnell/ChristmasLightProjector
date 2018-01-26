@@ -12,9 +12,12 @@ import Mixpanel
 
 class OnboardingViewcontroller : UIPageViewController {
     
+    let deviceId = UIDevice.current.identifierForVendor?.uuidString
+    
     override func viewDidLoad() {
         
-        Mixpanel.mainInstance().track(event: "onboardingViewed")
+        Mixpanel.mainInstance().track(event: "onboardingViewed",
+                                      properties: ["Device" : deviceId!])
 
         // Set the dataSource and delegate in code.
         // I can't figure out how to do this in the Storyboard!

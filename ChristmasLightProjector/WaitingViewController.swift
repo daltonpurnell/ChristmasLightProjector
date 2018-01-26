@@ -18,6 +18,8 @@ class WaitingViewController: UIViewController {
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var mainImageView: UIImageView!
     
+    let deviceId = UIDevice.current.identifierForVendor?.uuidString
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         toggleFinished(finished: false)
@@ -37,7 +39,8 @@ class WaitingViewController: UIViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: Any) {
-        Mixpanel.mainInstance().track(event: "waitingVCDoneButtonTapped")
+        Mixpanel.mainInstance().track(event: "waitingVCDoneButtonTapped",
+                                      properties: ["Device" : deviceId!])
 
         dismiss(animated: true, completion: nil)
     }

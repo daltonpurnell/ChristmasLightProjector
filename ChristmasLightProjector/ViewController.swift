@@ -27,6 +27,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     let kTree = "Tree"
     let kDeer = "Deer"
     
+    let deviceId = UIDevice.current.identifierForVendor?.uuidString
+    
     
     @IBOutlet weak var contentView: UIView!
     
@@ -123,7 +125,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
 
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        Mixpanel.mainInstance().track(event: "mainViewControllerViewed")
+        Mixpanel.mainInstance().track(event: "mainViewControllerViewed",
+                                      properties: ["Device" : deviceId!])
 
         pickerController.delegate = self
         btTableView.delegate = self
@@ -301,7 +304,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // MARK: - Actions
     
     @IBAction func uploadDrawingButtonTapped(_ sender: Any) {
-        Mixpanel.mainInstance().track(event: "uploadProjectionImageTapped")
+        Mixpanel.mainInstance().track(event: "uploadProjectionImageTapped",
+                                      properties: ["Device" : deviceId!])
 
         let alert = UIAlertController.init(title: "Upload Custom Projection Image", message: "Add your own image to project onto your house.", preferredStyle: .alert)
         let okAction = UIAlertAction.init(title: "OK", style: .default, handler: { (alert) in
@@ -317,7 +321,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     
     @IBAction func shapeButtonTapped(_ sender: Any) {
-        Mixpanel.mainInstance().track(event: "shapeButtonTapped")
+        Mixpanel.mainInstance().track(event: "shapeButtonTapped",
+                                      properties: ["Device" : deviceId!])
 
         shapeSelected = true
         shapeButton.setImage(UIImage(named:"starSelected"), for: .normal)
@@ -327,7 +332,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         pencilButton.setImage(UIImage(named:"stroke"), for: .normal)
     }
     @IBAction func pencilButtonTapped(_ sender: Any) {
-        Mixpanel.mainInstance().track(event: "pencilButtonTapped")
+        Mixpanel.mainInstance().track(event: "pencilButtonTapped",
+                                      properties: ["Device" : deviceId!])
 
         pencilSelected = true
         pencilButton.setImage(UIImage(named:"pencilSelected"), for: .normal)
@@ -337,7 +343,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         shapeButton.setImage(UIImage(named:"star"), for: .normal)
     }
     @IBAction func lineButtonTapped(_ sender: Any) {
-        Mixpanel.mainInstance().track(event: "lineButtonTapped")
+        Mixpanel.mainInstance().track(event: "lineButtonTapped",
+                                      properties: ["Device" : deviceId!])
         
         self.lineSelected = true
         self.lineButton.setImage(UIImage(named:"lineSelected"), for: .normal)
@@ -355,7 +362,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     
     @IBAction func startOverButtonTapped(_ sender: Any) {
-        Mixpanel.mainInstance().track(event: "startOverButtonTapped")
+        Mixpanel.mainInstance().track(event: "startOverButtonTapped",
+                                      properties: ["Device" : deviceId!])
         
         let alert = UIAlertController.init(title: "Start Over?", message: "Are you sure you want to start over? Your photo and drawing will both be erased. This cannot be undone.", preferredStyle: .alert)
         
@@ -381,7 +389,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     
     @IBAction func uploadImageButtonTapped(_ sender: Any) {
-        Mixpanel.mainInstance().track(event: "uploadHouseImageButtonTapped")
+        Mixpanel.mainInstance().track(event: "uploadHouseImageButtonTapped",
+                                      properties: ["Device" : deviceId!])
 
         showCameraActionSheet()
 //        let alertViewController = UIAlertController(title: "", message: "Choose your option", preferredStyle: .actionSheet)
@@ -402,7 +411,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
 
     
     @IBAction func reset(_ sender: AnyObject) {
-        Mixpanel.mainInstance().track(event: "deleteDrawingButtonTapped")
+        Mixpanel.mainInstance().track(event: "deleteDrawingButtonTapped",
+                                      properties: ["Device" : deviceId!])
 
         
         let alert = UIAlertController.init(title: "Delete?", message: "Are you sure you want to delete your drawing? Your photo will remain, but your drawing will be erased. This cannot be undone.", preferredStyle: .alert)
@@ -422,7 +432,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     @IBAction func saveAndSendToProjector(_ sender: AnyObject) {
-        Mixpanel.mainInstance().track(event: "sendDrawingToProjectorTapped")
+        Mixpanel.mainInstance().track(event: "sendDrawingToProjectorTapped",
+                                      properties: ["Device" : deviceId!])
 
         UIGraphicsBeginImageContext(contentView.bounds.size)
         let blackImage = UIImage(withBackground: .black)
@@ -465,7 +476,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     @IBAction func undoPressed(_ sender: AnyObject) {
-        Mixpanel.mainInstance().track(event: "undoButtonTapped")
+        Mixpanel.mainInstance().track(event: "undoButtonTapped",
+                                      properties: ["Device" : deviceId!])
         
         if images.count >= 2 {
             mainImageView.image = images[images.count - 2]
@@ -1016,12 +1028,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     @IBAction func skipSetupButtonTapped(_ sender: Any) {
-        Mixpanel.mainInstance().track(event: "skipSetupButtonTapped")
+        Mixpanel.mainInstance().track(event: "skipSetupButtonTapped",
+                                      properties: ["Device" : deviceId!])
         showMainVC()
     }
     
     @IBAction func tryAgainButtonTapped(_ sender: Any) {
-        Mixpanel.mainInstance().track(event: "tryAgainButtonTapped")
+        Mixpanel.mainInstance().track(event: "tryAgainButtonTapped",
+                                      properties: ["Device" : deviceId!])
 
 //        toggleTryAgain(on: false)
 //        resumeScan()

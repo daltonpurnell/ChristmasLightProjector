@@ -19,6 +19,8 @@ class ShapesViewController: UIViewController {
     weak var delegate: ShapesViewControllerDelegate?
     var selectedShape:String = "Star"
     
+    let deviceId = UIDevice.current.identifierForVendor?.uuidString
+    
     let shapes: [String] = [
         "Circle",
         "Candy Cane",
@@ -32,7 +34,8 @@ class ShapesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Mixpanel.mainInstance().track(event: "shapesViewControllerViewed")
+        Mixpanel.mainInstance().track(event: "shapesViewControllerViewed",
+                                      properties: ["Device" : deviceId!])
 
     }
     

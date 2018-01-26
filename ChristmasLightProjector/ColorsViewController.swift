@@ -19,6 +19,8 @@ class ColorsViewController: UIViewController {
 
     weak var delegate: ColorsViewControllerDelegate?
     var isRandomColor = false
+    
+    let deviceId = UIDevice.current.identifierForVendor?.uuidString
 
     var selectedColor:(CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0)
     var selectedIndex = 0
@@ -35,7 +37,8 @@ class ColorsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Mixpanel.mainInstance().track(event: "colorsViewControllerViewed")
+        Mixpanel.mainInstance().track(event: "colorsViewControllerViewed",
+                                      properties: ["Device" : deviceId!])
 
     }
 

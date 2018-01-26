@@ -18,13 +18,16 @@ class SettingsViewController: UIViewController {
     
     var brush: CGFloat = 10.0
     
+    let deviceId = UIDevice.current.identifierForVendor?.uuidString
+    
     weak var delegate: SettingsViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        Mixpanel.mainInstance().track(event: "pencilWidthViewControllerViewed")
+        Mixpanel.mainInstance().track(event: "pencilWidthViewControllerViewed",
+                                      properties: ["Device" : deviceId!])
 
     }
     

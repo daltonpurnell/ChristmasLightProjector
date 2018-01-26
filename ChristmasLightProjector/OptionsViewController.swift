@@ -32,10 +32,13 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     var turnOffSelected = false
     var connectedDeviceName = ""
     
+    let deviceId = UIDevice.current.identifierForVendor?.uuidString
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Mixpanel.mainInstance().track(event: "optionsViewControllerViewed")
+        Mixpanel.mainInstance().track(event: "optionsViewControllerViewed",
+                                      properties: ["Device" : deviceId!])
 
         tableView.delegate = self
         tableView.dataSource = self
