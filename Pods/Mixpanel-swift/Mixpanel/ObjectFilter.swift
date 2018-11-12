@@ -177,7 +177,7 @@ class ObjectFilter: CustomStringConvertible {
                 }
             }
         } else if let viewController = object as? UIViewController {
-            for child in viewController.childViewControllers {
+            for child in viewController.children {
                 if searchClass == nil || child.isKind(of: searchClass!) {
                     children.append(child)
                 }
@@ -194,7 +194,7 @@ class ObjectFilter: CustomStringConvertible {
         // Reorder the cells in a table view so that they are arranged by y position
         if let sClass = searchClass, sClass.isSubclass(of: UITableViewCell.self) {
             children.sort {
-                return $0.frame.origin.y < $1.frame.origin.y
+                return ($0 as! UITableViewCell).frame.origin.y < ($1 as! UITableViewCell).frame.origin.y
             }
         }
         return children

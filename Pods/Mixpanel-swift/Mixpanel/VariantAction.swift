@@ -242,7 +242,7 @@ class VariantAction: NSObject, NSCoding {
             var retValue: AnyObject? = nil
             let method: Method!
             if object is AnyClass {
-                method = class_getClassMethod(object as! AnyClass, selector)
+                method = class_getClassMethod(object as? AnyClass, selector)
             } else {
                 method = class_getInstanceMethod(type(of: object), selector)
             }
@@ -285,13 +285,13 @@ class VariantAction: NSObject, NSCoding {
 
     class func extractAndRunMethodFromSelector(selector: Selector, implementation: IMP?, object: AnyObject, args: [Any]) -> AnyObject? {
         if selector.description == "setImage:forState:" {
-            typealias Function = @convention(c) (AnyObject, Selector, UIImage, UIControlState) -> Void
+            typealias Function = @convention(c) (AnyObject, Selector, UIImage, UIControl.State) -> Void
             let function = unsafeBitCast(implementation, to: Function.self)
-            function(object, selector, args[0] as! UIImage, UIControlState(rawValue: args[1] as! UInt))
+            function(object, selector, args[0] as! UIImage, UIControl.State(rawValue: args[1] as! UInt))
         } else if selector.description == "imageForState:" {
-            typealias Function = @convention(c) (AnyObject, Selector, UIControlState) -> Unmanaged<UIImage>
+            typealias Function = @convention(c) (AnyObject, Selector, UIControl.State) -> Unmanaged<UIImage>
             let function = unsafeBitCast(implementation, to: Function.self)
-            let val = function(object, #selector(UIButton.image(for:)), UIControlState(rawValue: args[0] as! UInt)).takeUnretainedValue()
+            let val = function(object, #selector(UIButton.image(for:)), UIControl.State(rawValue: args[0] as! UInt)).takeUnretainedValue()
             return val
         } else if selector.description == "setFrame:" {
             guard let nsValue = args[0] as? NSValue else {
@@ -318,17 +318,17 @@ class VariantAction: NSObject, NSCoding {
             let function = unsafeBitCast(implementation, to: Function.self)
             function(object, selector, args[0] as! Bool)
         } else if selector.description == "setBackgroundImage:forState:" {
-            typealias Function = @convention(c) (AnyObject, Selector, UIImage, UIControlState) -> Void
+            typealias Function = @convention(c) (AnyObject, Selector, UIImage, UIControl.State) -> Void
             let function = unsafeBitCast(implementation, to: Function.self)
-            function(object, selector, args[0] as! UIImage, UIControlState(rawValue: args[1] as! UInt))
+            function(object, selector, args[0] as! UIImage, UIControl.State(rawValue: args[1] as! UInt))
         } else if selector.description == "setTextAlignment:" {
             typealias Function = @convention(c) (AnyObject, Selector, NSTextAlignment) -> Void
             let function = unsafeBitCast(implementation, to: Function.self)
             function(object, selector, NSTextAlignment(rawValue: args[0] as! Int)!)
         } else if selector.description == "setTitle:forState:" {
-            typealias Function = @convention(c) (AnyObject, Selector, NSString, UIControlState) -> Void
+            typealias Function = @convention(c) (AnyObject, Selector, NSString, UIControl.State) -> Void
             let function = unsafeBitCast(implementation, to: Function.self)
-            function(object, selector, args[0] as! NSString, UIControlState(rawValue: args[1] as! UInt))
+            function(object, selector, args[0] as! NSString, UIControl.State(rawValue: args[1] as! UInt))
         }
         return nil
     }
@@ -389,7 +389,7 @@ class VariantAction: NSObject, NSCoding {
     }
 
     static func transformValue(_ value: AnyObject, to type: String) -> NSObject? {
-        if let classType = NSClassFromString(type), type(of: value) == classType {
+        if let classType = NSClassFromString(type), Swift.type(of: value) == classType {
             return ValueTransformer(forName: NSValueTransformerName(rawValue: "IdentityTransformer"))?.transformedValue(value) as? NSObject
         }
 

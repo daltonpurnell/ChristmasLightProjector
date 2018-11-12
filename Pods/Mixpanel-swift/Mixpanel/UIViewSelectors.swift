@@ -26,29 +26,29 @@ extension UIView {
         return encryptedStuff
     }
 
-    func mp_fingerprintVersion() -> NSNumber {
+    @objc func mp_fingerprintVersion() -> NSNumber {
         return NSNumber(value: 1)
     }
 
-    func mp_varA() -> NSString? {
+    @objc func mp_varA() -> NSString? {
         return mp_encryptHelper(input: mp_viewId())
     }
 
-    func mp_varB() -> NSString? {
+    @objc func mp_varB() -> NSString? {
         return mp_encryptHelper(input: mp_controllerVariable())
     }
 
-    func mp_varC() -> NSString? {
+    @objc func mp_varC() -> NSString? {
         return mp_encryptHelper(input: mp_imageFingerprint())
     }
 
-    func mp_varSetD() -> NSArray {
+    @objc func mp_varSetD() -> NSArray {
         return mp_targetActions().map {
             mp_encryptHelper(input: $0)
         } as NSArray
     }
 
-    func mp_varE() -> NSString? {
+    @objc func mp_varE() -> NSString? {
         return mp_encryptHelper(input: mp_text())
     }
 
@@ -83,7 +83,7 @@ extension UIView {
         let imageSelector = NSSelectorFromString("image")
 
         if let button = self as? UIButton {
-            originalImage = button.image(for: UIControlState.normal)
+            originalImage = button.image(for: UIControl.State.normal)
         } else if let superviewUnwrapped = self.superview,
             NSStringFromClass(type(of: superviewUnwrapped)) == "UITabBarButton" && self.responds(to: imageSelector) {
             originalImage = self.perform(imageSelector)?.takeUnretainedValue() as? UIImage
@@ -108,10 +108,11 @@ extension UIView {
             for i in 0..<32 {
                 let j = 2*i
                 let k = 2*i + 1
-                let part1 = ((data32[j] & 0x80000000) >> 24) | ((data32[j] & 0x800000) >> 17) | ((data32[j] & 0x8000) >> 10)
-                let part2 = ((data32[j] & 0x80) >> 3) | ((data32[k] & 0x80000000) >> 28) | ((data32[k] & 0x800000) >> 21)
-                let part3 = ((data32[k] & 0x8000) >> 14) | ((data32[k] & 0x80) >> 7)
-                data4[i] = UInt8(part1 | part2 | part3)
+                let part1 = ((data32[j] & 0x80000000) >> 24) | ((data32[j] & 0x800000) >> 17)
+                let part2 = ((data32[j] & 0x8000) >> 10) | ((data32[j] & 0x80) >> 3)
+                let part3 = ((data32[k] & 0x80000000) >> 28) | ((data32[k] & 0x800000) >> 21)
+                let part4 = ((data32[k] & 0x8000) >> 14) | ((data32[k] & 0x80) >> 7)
+                data4[i] = UInt8(part1 | part2 | part3 | part4)
             }
             let arr = Array(UnsafeBufferPointer(start: data4, count: 32))
             result = Data(bytes: arr).base64EncodedString()
@@ -123,12 +124,12 @@ extension UIView {
         var targetActions = [String]()
         if let control = self as? UIControl {
             for target in control.allTargets {
-                let allEvents: UIControlEvents = [.allTouchEvents, .allEditingEvents]
+                let allEvents: UIControl.Event = [.allTouchEvents, .allEditingEvents]
                 let allEventsRaw = allEvents.rawValue
                 var e: UInt = 0
                 while allEventsRaw >> e > 0 {
                     let event = allEventsRaw & (0x01 << e)
-                    let controlEvent = UIControlEvents(rawValue: event)
+                    let controlEvent = UIControl.Event(rawValue: event)
                     let ignoreActions = ["preVerify:forEvent:", "execute:forEvent:"]
                     if let actions = control.actions(forTarget: target, forControlEvent: controlEvent) {
                         for action in actions {

@@ -54,20 +54,18 @@ extension Tweak {
 
      - parameter tweakName:      name of the tweak
      - parameter defaultValue:   the default value set for the tweak
-     - parameter collectionName: the collection name of the tweak (do not set, optional)
-     - parameter groupName:      the group name of the tweak (do not set, optional)
      */
-	public init(tweakName: String, defaultValue: T, _ collectionName: String = "Mixpanel", _ groupName: String = "Mixpanel") {
+	public init(tweakName: String, defaultValue: T) {
 		self.init(
             tweakName: tweakName,
             defaultValue: defaultValue,
-			collectionName: collectionName,
-			groupName: groupName
+            collectionName: "Mixpanel",
+            groupName: "Mixpanel"
 		)
 	}
 }
 
-extension Tweak where T: SignedNumber {
+extension Tweak where T: SignedNumeric & Comparable {
     /**
      Creates a Tweak<T> where T: SignedNumberType
      You can optionally provide a min / max / stepSize to restrict the bounds and behavior of a tweak.
@@ -77,16 +75,12 @@ extension Tweak where T: SignedNumber {
      - parameter minimumValue:   minimum value to allow for the tweak
      - parameter maximumValue:   maximum value to allow for the tweak
      - parameter stepSize:       step size for the tweak (do not set, optional)
-     - parameter collectionName: the collection name of the tweak (do not set, optional)
-     - parameter groupName:      the group name of the tweak (do not set, optional)
      */
 	public init(tweakName: String,
 	            defaultValue: T,
 	            min minimumValue: T? = nil,
 	            max maximumValue: T? = nil,
-	            stepSize: T? = nil,
-	            _ collectionName: String = "Mixpanel",
-	            _ groupName: String = "Mixpanel") {
+	            stepSize: T? = nil) {
 
 		// Assert that the tweak's defaultValue is between its min and max (if they exist)
 		if clip(defaultValue, minimumValue, maximumValue) != defaultValue {
@@ -99,8 +93,8 @@ extension Tweak where T: SignedNumber {
             minimumValue: minimumValue,
             maximumValue: maximumValue,
 			stepSize: stepSize,
-            collectionName: collectionName,
-            groupName: groupName
+            collectionName: "Mixpanel",
+            groupName: "Mixpanel"
 		)
 	}
 }

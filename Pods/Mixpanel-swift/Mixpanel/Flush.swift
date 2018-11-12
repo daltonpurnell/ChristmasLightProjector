@@ -16,7 +16,6 @@ protocol FlushDelegate {
 }
 
 class Flush: AppLifecycle {
-    
     let lock: ReadWriteLock
     var timer: Timer?
     var delegate: FlushDelegate?
@@ -133,7 +132,7 @@ class Flush: AppLifecycle {
                                                 }
                                             #endif // os(iOS)
                                             if success {
-                                                if let lastIndex = range.last, shadowQueue.count < lastIndex {
+                                                if let lastIndex = range.last, shadowQueue.count - 1 > lastIndex {
                                                     shadowQueue.removeSubrange(range)
                                                 } else {
                                                     shadowQueue.removeAll()

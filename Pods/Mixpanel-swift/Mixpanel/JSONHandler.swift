@@ -50,7 +50,7 @@ class JSONHandler {
 
     private class func makeObjectSerializable(_ obj: MPObjectToParse) -> MPObjectToParse {
         switch obj {
-        case is String, is Int, is UInt, is Double, is Float, is Bool:
+        case is String, is Int, is UInt, is UInt64, is Double, is Float, is Bool:
             return obj
 
         case let obj as Array<Any>:
@@ -58,9 +58,9 @@ class JSONHandler {
 
         case let obj as InternalProperties:
             var serializedDict = InternalProperties()
-            _ = obj.map() { (k, v) in
-                serializedDict[k] =
-                    makeObjectSerializable(v) }
+            _ = obj.map() { e in
+                serializedDict[e.key] =
+                    makeObjectSerializable(e.value) }
             return serializedDict
 
         case let obj as Date:

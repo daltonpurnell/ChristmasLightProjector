@@ -1,14 +1,14 @@
 PODS:
-  - Mixpanel-swift (2.2.2):
-    - Mixpanel-swift/Complete (= 2.2.2)
-  - Mixpanel-swift/Complete (2.2.2)
+  - Mixpanel-swift (2.5.5):
+    - Mixpanel-swift/Complete (= 2.5.5)
+  - Mixpanel-swift/Complete (2.5.5)
 
 DEPENDENCIES:
   - Mixpanel-swift
 
 SPEC CHECKSUMS:
-  Mixpanel-swift: a5b97ff52d4e02ab74cddd918798dc2533da887c
+  Mixpanel-swift: 92fd02942ef4bf5a1bd0630a88223a417b8c8b39
 
 PODFILE CHECKSUM: ea2e1a9d34d22cbc385e948a2050a71d812d67cf
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.4.0
